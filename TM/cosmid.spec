@@ -8,4 +8,5 @@ DISTRIB = interact services
 IGNORE = Makefile "*.exe"
 
 cosmiddisp : cosmid.tbl
+cosmidalgo : cosmid.tma
 doit : cosmid.doit
