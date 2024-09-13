@@ -3,4 +3,4 @@ hostname 10.245.83.14
 ForwardAgent yes
 ForwardX11 yes
 ForwardX11Trusted yes
-SetEnv TERM=xterm-156color
+#SetEnv TERM=xterm-156color

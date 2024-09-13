@@ -3,6 +3,6 @@ tmcbase = base.tmc
 Module TMbase mode=ignore
 
 TGTDIR = /home/cosmid
-SCRIPT = VERSION Experiment.config
+SCRIPT = VERSION Experiment.config interact
 IGNORE = Makefile *.exe
 
