@@ -6,6 +6,11 @@ cosmiddispnc.cc
 cosmiddispncoui.cc
 cosmiddispnc.o
 cosmiddispncoui.o
+cosmidalgoa.tmc
+cosmidalgo.cc
+cosmidalgooui.cc
+cosmidalgo.o
+cosmidalgooui.o
 doit.dep
 cosmidcmd.cc
 cosmidcmd.dat
@@ -36,6 +41,7 @@ TMbase.tbl
 Makefile
 *.exe
 cosmiddispnc
+cosmidalgo
 doit
 cosmidcltnc
 cosmidsrvr
