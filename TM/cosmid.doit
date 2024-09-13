@@ -1,0 +1,4 @@
+display cosmiddisp -n disp
+client cosmidclt
+memo
+batchfile interact
