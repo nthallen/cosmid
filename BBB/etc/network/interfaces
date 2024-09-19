@@ -9,28 +9,23 @@ iface lo inet loopback
 auto eth0
 iface eth0 inet static
 address 10.11.97.50
-netmask 255.255.255.0
-network 10.11.97.0
-broadcast 10.11.97.255
-gateway 10.11.97.100
+mask 255.255.0.0
+#gateway 10.11.97.1
+#gateway 10.11.97.1
+post-up route add default gw 10.11.97.100
+dns-nameservers 8.8.8.8
+dns-search foo
+#dnsnameserver 10.11.97.1
 # Example to keep MAC address between reboots
 #hwaddress ether DE:AD:BE:EF:CA:FE
 
-# The secondary network interface
-#auto eth1
-#iface eth1 inet dhcp
-
-# WiFi Example
-#auto wlan0
-#iface wlan0 inet dhcp
-#    wpa-ssid "essid"
-#    wpa-psk  "password"
-
-# Ethernet/RNDIS gadget (g_ether)
-# ... or on host side, usbnet and random hwaddr
-# Note on some boards, usb0 is automaticly setup with an init script
-# iface usb0 inet static
-#     address 192.168.7.2
-#     netmask 255.255.255.0
-#     network 192.168.7.0
-#     gateway 192.168.7.1
+iface usb0 inet static
+address 192.168.7.2
+netmask 255.255.255.0
+#post-up route add default gw 192.168.7.1
+dns-nameservers 8.8.8.8
+dns-search foo
+#network 192.168.7.0
+#gateway 198.162.7.1
+#gateway 192.168.7.1
+#dnsnameserver 192.168.7.1

@@ -1,0 +1,14 @@
+[Unit]
+Description=Start POPS instrument
+After=rtc-ds1307_new.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/usr/bin
+ExecStartPre=/usr/bin/config-pops-pins.sh
+ExecStartPre=/usr/bin/init.sh
+ExecStart=/bin/bash /usr/bin/pops_start.sh
+
+[Install]
+WantedBy=multi-user.target
