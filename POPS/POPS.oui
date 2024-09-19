@@ -1,0 +1,9 @@
+<package> POPS
+<include> cmd_reader
+<include> msg oui
+<include> cmd_reader
+
+<package> appid_default
+<include> "dasio/appid.h"
+<defs>
+  DAS_IO::AppID_t DAS_IO::AppID("POPS", "POPS", "V1.1");

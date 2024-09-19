@@ -1,0 +1,59 @@
+%{
+  #define EXP2(x) ((x)*(x))
+  #define EXP3(x) ((x)*(x)*(x))
+%}
+TM typedef double POPS_Area_Density_t { text "%8.3lf"; }
+TM typedef double POPS_Volume_Density_t { text "%8.3lf"; }
+
+POPS_Area_Density_t POPS_Surf_Area; Invalidate POPS_Surf_Area;
+
+{ POPS_Surf_Area = (POPS_Srvr == 2 && POPS_Stale == 0) ?
+    3.14159265358 * POPS_num_cc * (
+      EXP2(128.28179425) * POPS_Bin01 +
+      EXP2(139.3023049)  * POPS_Bin02 +
+      EXP2(152.2375759)  * POPS_Bin03 +
+      EXP2(167.88185685) * POPS_Bin04 +
+      EXP2(187.2672267)  * POPS_Bin05 +
+      EXP2(211.5566661)  * POPS_Bin06 +
+      EXP2(264.64054175) * POPS_Bin07 +
+      EXP2(359.3609217)  * POPS_Bin08 +
+      EXP2(454.92921015) * POPS_Bin09 +
+      EXP2(540.42298755) * POPS_Bin10 +
+      EXP2(841.0467569)  * POPS_Bin11 +
+      EXP2(1227.847511)  * POPS_Bin12 +
+      EXP2(1512.8310775) * POPS_Bin13 +
+      EXP2(1851.4034985) * POPS_Bin14 +
+      EXP2(2302.7662475) * POPS_Bin15 +
+      EXP2(3042.7116435) * POPS_Bin16
+    )/(POPS_Part_Num * 1e6) : -99999.99;
+  Validate POPS_Surf_Area;
+}
+
+POPS_Volume_Density_t POPS_Vol_Density; Invalidate POPS_Vol_Density;
+
+/*
+  POPS_S(i) = sum(pi.*(midsize.^2).*POPS_N(i).*POPS_HK(i, 29:44)'./sum(POPS_HK(i, 29:44)))/1e6; % um^2/cm^3
+  POPS_V(i) = sum(pi/6.*(midsize.^3).*POPS_N(i).*POPS_HK(i, 29:44)'./sum(POPS_HK(i, 29:44)))/1e9; % um^3/cm^3
+*/
+
+{ POPS_Vol_Density = (POPS_Srvr == 2 && POPS_Stale == 0) ?
+    (3.14159265358/6) * POPS_num_cc * (
+      EXP3(128.28179425) * POPS_Bin01 +
+      EXP3(139.3023049)  * POPS_Bin02 +
+      EXP3(152.2375759)  * POPS_Bin03 +
+      EXP3(167.88185685) * POPS_Bin04 +
+      EXP3(187.2672267)  * POPS_Bin05 +
+      EXP3(211.5566661)  * POPS_Bin06 +
+      EXP3(264.64054175) * POPS_Bin07 +
+      EXP3(359.3609217)  * POPS_Bin08 +
+      EXP3(454.92921015) * POPS_Bin09 +
+      EXP3(540.42298755) * POPS_Bin10 +
+      EXP3(841.0467569)  * POPS_Bin11 +
+      EXP3(1227.847511)  * POPS_Bin12 +
+      EXP3(1512.8310775) * POPS_Bin13 +
+      EXP3(1851.4034985) * POPS_Bin14 +
+      EXP3(2302.7662475) * POPS_Bin15 +
+      EXP3(3042.7116435) * POPS_Bin16
+    )/(POPS_Part_Num * 1e9) : -99999.99;
+  Validate POPS_Vol_Density;
+}

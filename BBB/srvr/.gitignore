@@ -1,0 +1,4 @@
+*.o
+*.exe
+POPS_srvr
+POPS_srvroui.cc

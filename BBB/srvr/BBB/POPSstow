@@ -1,0 +1,23 @@
+#! /bin/bash
+# POPSstow
+# Moves the POPS data into the oldData folder
+# This script runs on the POPS BBB and is invoked by POPSdata
+PATH=/bin:/usr/bin
+cd /media/uSD/Data
+runs=`ls -d F* 2>/dev/null`
+for run in $runs; do
+  let i=1
+  suffix=''
+  dest=$run
+  while [ -d oldData/$dest ]; do
+    suffix=".$i"
+    dest=$run$suffix
+    let i=i+1
+  done
+  echo "moving $run to oldData/$dest"
+  mv $run oldData/$dest
+done
+
+echo
+echo "Space on POPS BBB:"
+df -h .

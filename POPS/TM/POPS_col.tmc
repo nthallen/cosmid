@@ -1,0 +1,4 @@
+%{
+  #include "POPS.h"
+  POPS_t POPS;
+%}

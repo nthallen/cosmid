@@ -1,0 +1,99 @@
+TM "Receive" POPS 1;
+
+TM typedef double POPS_Tdrift_t { text "%8.2lf"; }
+TM typedef uint8_t POPS_Stale_t { text "%3u"; }
+TM typedef uint8_t POPS_Srvr_t { text "%4u" POPS_Srvr_text(); }
+TM typedef uint32_t POPS_Counts_t { text "%8u"; }
+TM typedef float POPS_float_t { text "%8.3f"; }
+
+%{
+  const char *POPS_Srvr_text(POPS_Srvr_t state) {
+    switch (state) {
+      case 0: return "Init";
+      case 1: return "Idle";
+      case 2: return "Actv";
+      case 3: return "ShDn";
+      default: return "????";
+    }
+  }
+%}
+
+TM 1 Hz POPS_Tdrift_t POPS_Tdrift;
+TM 1 Hz POPS_Counts_t POPS_Part_Num;
+TM 1 Hz POPS_float_t POPS_num_cc;
+TM 1 Hz POPS_Counts_t POPS_Baseline;
+TM 1 Hz POPS_float_t POPS_STD;
+TM 1 Hz POPS_float_t POPS_P_mbar;
+TM 1 Hz POPS_float_t POPS_Flow;
+TM 1 Hz POPS_float_t POPS_LDTemp;
+TM 1 Hz POPS_float_t POPS_LD_Mon;
+TM 1 Hz POPS_float_t POPS_Temp;
+TM 1 Hz POPS_Counts_t POPS_Bin01;
+TM 1 Hz POPS_Counts_t POPS_Bin02;
+TM 1 Hz POPS_Counts_t POPS_Bin03;
+TM 1 Hz POPS_Counts_t POPS_Bin04;
+TM 1 Hz POPS_Counts_t POPS_Bin05;
+TM 1 Hz POPS_Counts_t POPS_Bin06;
+TM 1 Hz POPS_Counts_t POPS_Bin07;
+TM 1 Hz POPS_Counts_t POPS_Bin08;
+TM 1 Hz POPS_Counts_t POPS_Bin09;
+TM 1 Hz POPS_Counts_t POPS_Bin10;
+TM 1 Hz POPS_Counts_t POPS_Bin11;
+TM 1 Hz POPS_Counts_t POPS_Bin12;
+TM 1 Hz POPS_Counts_t POPS_Bin13;
+TM 1 Hz POPS_Counts_t POPS_Bin14;
+TM 1 Hz POPS_Counts_t POPS_Bin15;
+TM 1 Hz POPS_Counts_t POPS_Bin16;
+TM 1 Hz POPS_Srvr_t POPS_Srvr;
+TM 1 Hz POPS_Stale_t POPS_Stale;
+TM 1 Hz POPS_Stale_t POPS_DrvStale;
+
+POPS_float_t POPS_ccm; Invalidate POPS_ccm;
+{ POPS_ccm = 60 * (-0.012298*POPS_Flow*POPS_Flow +
+      1.2961*POPS_Flow - 1.19045);
+  Validate POPS_ccm;
+}
+
+Group POPSgrp (
+    POPS_Tdrift, POPS_Part_Num, POPS_num_cc, POPS_Baseline,
+    POPS_STD, POPS_P_mbar, POPS_Flow, POPS_LDTemp,
+    POPS_LD_Mon, POPS_Temp, POPS_Bin01, POPS_Bin02,
+    POPS_Bin03, POPS_Bin04, POPS_Bin05, POPS_Bin06,
+    POPS_Bin07, POPS_Bin08, POPS_Bin09, POPS_Bin10,
+    POPS_Bin11, POPS_Bin12, POPS_Bin13, POPS_Bin14,
+    POPS_Bin15, POPS_Bin16, POPS_Srvr, POPS_Stale,
+    POPS_DrvStale) {
+  POPS_DrvStale = POPS_obj->Stale(255);
+  if (POPS_DrvStale == 0) {
+    POPS_Tdrift = dtime() - POPS.Time;
+    POPS_Part_Num = POPS.Part_Num;
+    POPS_num_cc = POPS.PartCon_num_cc;
+    POPS_Baseline = POPS.Baseline;
+    POPS_STD = POPS.STD;
+    POPS_P_mbar = POPS.P_mbar;
+    POPS_Flow = POPS.Flow;
+    POPS_LDTemp = POPS.LDTemp;
+    POPS_LD_Mon = POPS.LD_Mon;
+    POPS_Temp = POPS.Temp;
+    POPS_Bin01 = POPS.Bin01;
+    POPS_Bin02 = POPS.Bin02;
+    POPS_Bin03 = POPS.Bin03;
+    POPS_Bin04 = POPS.Bin04;
+    POPS_Bin05 = POPS.Bin05;
+    POPS_Bin06 = POPS.Bin06;
+    POPS_Bin07 = POPS.Bin07;
+    POPS_Bin08 = POPS.Bin08;
+    POPS_Bin09 = POPS.Bin09;
+    POPS_Bin10 = POPS.Bin10;
+    POPS_Bin11 = POPS.Bin11;
+    POPS_Bin12 = POPS.Bin12;
+    POPS_Bin13 = POPS.Bin13;
+    POPS_Bin14 = POPS.Bin14;
+    POPS_Bin15 = POPS.Bin15;
+    POPS_Bin16 = POPS.Bin16;
+    POPS_Srvr  = POPS.Srvr;
+    POPS_Stale = POPS.Stale;
+  }
+  POPS_obj->synch();
+}
+

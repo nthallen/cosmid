@@ -1,0 +1,22 @@
+ModuleDef POPS [ tbl_name= ] {
+}
+
+tmcbase = POPS.tmc
+tmcbase = POPS_conv.tmc
+colbase = POPS_col.tmc
+cmdbase = POPS.cmd
+genuibase = POPS.genui
+- : POPS.tbl:POPS.tbl.in
+DISTRIB = POPS
+CPPFLAGS = -I @MODDIR@/..
+OBJ = POPS.tbl POPS
+IGNORE = POPS.tbl
+
+%%
+.PHONY : clean-POPS build-POPS
+POPS : build-POPS
+	cd @MODDIR@/.. && make POPS
+	cp @MODDIR@/../POPS POPS
+clean-dist : clean-POPS
+clean-POPS :
+	cd @MODDIR@/.. && make clean

@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# /root/SW/bin/start_POPS_srvr
+
+export TMBINDIR=/root/SW/bin
+export Experiment=DPOPS
+/usr/bin/nohup $TMBINDIR/POPS_srvr -o /var/log/pops </dev/null >/dev/null 2>&1 &
+exit 0
