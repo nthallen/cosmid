@@ -9,7 +9,7 @@ iface lo inet loopback
 auto eth0
 iface eth0 inet static
 address 10.11.97.50
-mask 255.255.0.0
+netmask 255.255.255.0
 #gateway 10.11.97.1
 #gateway 10.11.97.1
 post-up route add default gw 10.11.97.100
