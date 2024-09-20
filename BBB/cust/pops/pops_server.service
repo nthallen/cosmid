@@ -1,0 +1,16 @@
+[Unit]
+Description=Start POPS Server
+After=rtc-ds1307_new.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/cosmid
+Environment="TMBINDIR=/root/SW/bin"
+Environment="Experiment=cosmid"
+ExecStartPre=/usr/bin/config-pops-pins.sh
+ExecStartPre=/usr/bin/init.sh
+ExecStart=/root/SW/bin/POPS_srvr -o /var/log/pops
+
+[Install]
+WantedBy=multi-user.target

@@ -8,7 +8,7 @@ OBJ = interface.o socket.o server.o loop.o msg.o \
 
 DESTDIR = /root/SW/bin
 
-.PHONY : all clean install
+.PHONY : all clean install install-service
 
 all : POPS_srvr
 
@@ -16,7 +16,14 @@ POPS_srvr : $(OBJ)
 	$(CXX) -o POPS_srvr $(CXXFLAGS) $(OBJ) -lpthread -lrt
 
 install : POPS_srvr
-	cp POPS_srvr POPSstow start_POPS start_POPS_srvr services $(DESTDIR)
+	mkdir -o $(DESTDIR)
+	cp POPS_srvr POPSstow start_POPS services $(DESTDIR)
+
+install-service : pops_server.service
+	cp pops_server.service /lib/systemd/system/
+	systemctl daemon-reload
+	systemctl start pops_server
+	systemctl enable pops_server
 
 clean :
 	rm -f *.o POPS_srvr

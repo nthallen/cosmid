@@ -1,5 +1,16 @@
 #! /bin/bash
-monarch=~/SW/monarch/git
+function nl_error {
+  echo "export_to_BBB: ERROR: $*" >&2
+  exit 1
+}
+
+tgthost=$1
+[ -z "$tgthost" ] && tgthost=pops
+[ -d "../cust/$tgthost" ] ||
+  nl_error "No cust subdirectory defined for tgthost $tgthost"
+
+# Need to be able to reach 
+monarch=/usr/local/src/monarch/git
 dasio=$monarch/libs/dasio/src
 dasiosrc="$dasio/appid.cc
   $dasio/loop.cc
@@ -26,6 +37,7 @@ nlsrc="$nl/nl.h
 oui=/usr/local/include/oui.h
 
 srcs="BBB/*
+../cust/$tgthost/*
 POPS_srvr.cc
 POPS_srvroui.cc
 POPS_srvr.h
