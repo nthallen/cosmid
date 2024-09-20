@@ -52,3 +52,12 @@ that require modification are saved in src/BBB/dist. The
 customized versions are saved in src/BBB/cust. Files that need
 to be different on different POPS instruments will be placed
 in subdirectories by abbreviated hostname.
+
+Changes required when moving to a new network:
+
+  - Update POPS IP in cust/$tgthost/interfaces
+  - Update host IP in cust/$tgthost/POPS_BBB.cfg
+
+Additional changes required when adding a second POPS instrument:
+  - Duplicate config files from cust/pops
+  - Update POPS_srvr command line in cust/$tgthost/pops_server.service

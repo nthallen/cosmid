@@ -5,7 +5,7 @@ After=rtc-ds1307_new.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/home/cosmid
+WorkingDirectory=/root/SW
 Environment="TMBINDIR=/root/SW/bin"
 Environment="Experiment=cosmid"
 ExecStartPre=/usr/bin/config-pops-pins.sh
