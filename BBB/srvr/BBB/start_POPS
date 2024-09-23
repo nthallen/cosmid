@@ -2,6 +2,8 @@
 
 # /media/uSD/srvr/start_POPS
 
-cd /var/lib/cloud9/POPS
-nohup /var/lib/cloud9/POPS/popsdt < /media/uSD/POPS_BBB.cfg > /dev/null 2>&1 &
-exit 0
+#cd /var/lib/cloud9/POPS
+#nohup /var/lib/cloud9/POPS/popsdt < /media/uSD/POPS_BBB.cfg > /dev/null 2>&1 &
+#exit 0
+/bin/systemctl start pops_start
+
