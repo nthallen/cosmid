@@ -27,7 +27,7 @@ TM 1 Hz POPS_float_t POPS_P_mbar;
 TM 1 Hz POPS_float_t POPS_Flow;
 TM 1 Hz POPS_float_t POPS_LDTemp;
 TM 1 Hz POPS_float_t POPS_LD_Mon;
-TM 1 Hz POPS_float_t POPS_Temp;
+TM 1 Hz POPS_float_t POPS_AirTemp;
 TM 1 Hz POPS_Counts_t POPS_Bin01;
 TM 1 Hz POPS_Counts_t POPS_Bin02;
 TM 1 Hz POPS_Counts_t POPS_Bin03;
@@ -57,7 +57,7 @@ POPS_float_t POPS_ccm; Invalidate POPS_ccm;
 Group POPSgrp (
     POPS_Tdrift, POPS_Part_Num, POPS_num_cc, POPS_Baseline,
     POPS_STD, POPS_P_mbar, POPS_Flow, POPS_LDTemp,
-    POPS_LD_Mon, POPS_Temp, POPS_Bin01, POPS_Bin02,
+    POPS_LD_Mon, POPS_AirTemp, POPS_Bin01, POPS_Bin02,
     POPS_Bin03, POPS_Bin04, POPS_Bin05, POPS_Bin06,
     POPS_Bin07, POPS_Bin08, POPS_Bin09, POPS_Bin10,
     POPS_Bin11, POPS_Bin12, POPS_Bin13, POPS_Bin14,
@@ -74,7 +74,7 @@ Group POPSgrp (
     POPS_Flow = POPS.Flow;
     POPS_LDTemp = POPS.LDTemp;
     POPS_LD_Mon = POPS.LD_Mon;
-    POPS_Temp = POPS.Temp;
+    POPS_AirTemp = POPS.AirTemp;
     POPS_Bin01 = POPS.Bin01;
     POPS_Bin02 = POPS.Bin02;
     POPS_Bin03 = POPS.Bin03;

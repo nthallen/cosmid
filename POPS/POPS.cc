@@ -21,7 +21,7 @@ POPS_t POPS;
 int main(int argc, char **argv) {
   oui_init_options(argc, argv);
   DAS_IO::Loop ELoop;
-  UserPkts_UDP *Pkts = new UserPkts_UDP(7079); // constructor generated
+  UserPkts_UDP *Pkts = new UserPkts_UDP(10080); // constructor generated
   ELoop.add_child(Pkts);
   POPS_Cmd *Q = new POPS_Cmd();
   Q->connect();
@@ -52,15 +52,38 @@ UserPkts_UDP::UserPkts_UDP(int udp_port)
 
 bool UserPkts_UDP::protocol_input() {
   // double Time;
+  float    TimeSSM;
+  uint8_t  IntStatus, DataStatus;
   uint32_t Part_Num;
+  uint32_t HistSum;
   float    PartCon_num_cc;
   uint32_t Baseline;
+  uint32_t BLTH;
   float    STD;
+  float    MaxSTD;
   float    P_mbar;
+  float    MSTemp;
+  float    PumpLife;
+  float    WidthSTD;
+  float    WidthAvg;
   float    Flow;
+  float    PumpFB;
   float    LDTemp;
+  float    LaserFB;
   float    LD_Mon;
-  float    Temp;
+  float    AirTemp;
+  float    BatV;
+  float    Laser_Current;
+  float    Flow_Set;
+  uint32_t BL_Start;
+  float    TH_Mult;
+  uint16_t NBins;
+  float    logmin;
+  float    logmax;
+  int32_t  Skip_Save;
+  uint32_t MinPeakPts;
+  uint32_t MaxPeakPts;
+  int32_t  RawPts;
   uint32_t Bin01;
   uint32_t Bin02;
   uint32_t Bin03;
@@ -83,18 +106,44 @@ bool UserPkts_UDP::protocol_input() {
 
   cp = 0;
   if (not_str("POPS,") ||
+      not_found(',', true) || // SN
+      not_found(',', true) || // Filename
       not_ndigits(4,year) || not_ndigits(2, month) || not_ndigits(2,day) ||
       not_str("T") || not_ndigits(2,hour) || not_ndigits(2,minute) ||
       not_ndigits(2,second) || not_str(",", 1) ||
+      not_nfloat(&TimeSSM) || not_str(",", 1) ||
+      not_uint8(IntStatus) || not_str(",", 1) ||
+      not_uint8(DataStatus) || not_str(",", 1) ||
       not_uint32(Part_Num) || not_str(",", 1) ||
+      not_uint32(HistSum) || not_str(",", 1) ||
       not_nfloat(&PartCon_num_cc) || not_str(",", 1) ||
       not_uint32(Baseline) || not_str(",", 1) ||
+      not_uint32(BLTH) || not_str(",", 1) ||
       not_nfloat(&STD) || not_str(",", 1) ||
+      not_nfloat(&MaxSTD) || not_str(",", 1) ||
       not_nfloat(&P_mbar) || not_str(",", 1) ||
+      not_nfloat(&MSTemp) || not_str(",", 1) ||
+      not_nfloat(&PumpLife) || not_str(",", 1) ||
+      not_nfloat(&WidthSTD) || not_str(",", 1) ||
+      not_nfloat(&WidthAvg) || not_str(",", 1) ||
       not_nfloat(&Flow) || not_str(",", 1) ||
+      not_nfloat(&PumpFB) || not_str(",", 1) ||
       not_nfloat(&LDTemp) || not_str(",", 1) ||
+      not_nfloat(&LaserFB) || not_str(",", 1) ||
       not_nfloat(&LD_Mon) || not_str(",", 1) ||
-      not_nfloat(&Temp) || not_str(",", 1) ||
+      not_nfloat(&AirTemp) || not_str(",", 1) ||
+      not_nfloat(&BatV) || not_str(",", 1) ||
+      not_nfloat(&Laser_Current) || not_str(",", 1) ||
+      not_nfloat(&Flow_Set) || not_str(",", 1) ||
+      not_uint32(BL_Start) || not_str(",", 1) ||
+      not_nfloat(&TH_Mult) || not_str(",", 1) ||
+      not_uint16(NBins) || not_str(",", 1) ||
+      not_nfloat(&logmin) || not_str(",", 1) ||
+      not_nfloat(&logmax) || not_str(",", 1) ||
+      not_int32(Skip_Save) || not_str(",", 1) ||
+      not_uint32(MinPeakPts) || not_str(",", 1) ||
+      not_uint32(MaxPeakPts) || not_str(",", 1) ||
+      not_int32(RawPts) || not_str(",", 1) ||
       not_uint32(Bin01) || not_str(",", 1) ||
       not_uint32(Bin02) || not_str(",", 1) ||
       not_uint32(Bin03) || not_str(",", 1) ||
@@ -123,18 +172,42 @@ bool UserPkts_UDP::protocol_input() {
   buft.tm_min = minute;
   buft.tm_sec = second;
   ltime = mktime(&buft);
-  if (ltime == (le_time_t)(-1))
+  if (ltime == (le_time_t)(-1)) {
     report_err("%s: mktime returned error", iname);
-  else POPS.Time = ltime;
+  } else {
+    double fracsec = TimeSSM - floor(TimeSSM);
+    POPS.Time = ltime + fracsec;
+  }
+  POPS.IntStatus = IntStatus;
+  POPS.DataStatus = DataStatus;
   POPS.Part_Num = Part_Num;
+  POPS.HistSum = HistSum;
   POPS.PartCon_num_cc = PartCon_num_cc;
   POPS.Baseline = Baseline;
+  POPS.BLTH = BLTH;
   POPS.STD = STD;
+  POPS.MaxSTD = MaxSTD;
   POPS.P_mbar = P_mbar;
+  POPS.MSTemp = MSTemp;
+  POPS.PumpLife = PumpLife;
+  POPS.WidthSTD = WidthSTD;
+  POPS.WidthAvg = WidthAvg;
   POPS.Flow = Flow;
+  POPS.PumpFB = PumpFB;
   POPS.LDTemp = LDTemp;
+  POPS.LaserFB = LaserFB;
   POPS.LD_Mon = LD_Mon;
-  POPS.Temp = Temp;
+  POPS.AirTemp = AirTemp;
+  POPS.BatV = BatV;
+  POPS.BL_Start = BL_Start;
+  POPS.TH_Mult = TH_Mult;
+  POPS.NBins = NBins;
+  POPS.logmin = logmin;
+  POPS.logmax = logmax;
+  POPS.Skip_Save = Skip_Save;
+  POPS.MinPeakPts = MinPeakPts;
+  POPS.MaxPeakPts = MaxPeakPts;
+  POPS.RawPts = RawPts;
   POPS.Bin01 = Bin01;
   POPS.Bin02 = Bin02;
   POPS.Bin03 = Bin03;

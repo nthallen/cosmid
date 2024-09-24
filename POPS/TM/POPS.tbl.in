@@ -12,7 +12,7 @@
       Flow:   (POPS_ccm,8)   ccm;
       LDTemp: (POPS_LDTemp,8) C;
       LD_Mon: (POPS_LD_Mon,8);
-      Temp:   (POPS_Temp,8)   C;
+      Temp:   (POPS_AirTemp,8)   C;
     }; +|+; {
       HBox {
         {
@@ -38,7 +38,7 @@
 	}
       };
       +-+;
-      HBox { { Power: (POPSPwr,3) }; HGlue 0+1; { (flttime,9) MFCtr: (MFCtr,5) } }
+      HBox { HGlue 0+1; { (flttime,9) MFCtr: (MFCtr,5) } }
     }; +|+
   };
   -;

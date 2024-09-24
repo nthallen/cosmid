@@ -1,7 +1,9 @@
 freemem.tmc
 TMbase.genui
 TMbase.tbl
+POPS.tbl
 cosmidtblnc.tmc
+POPStblnc.tmc
 cosmiddispnc.cc
 cosmiddispncoui.cc
 cosmiddispnc.o
@@ -34,10 +36,12 @@ cosmidengextoui.cc
 cosmidengext.o
 cosmidengextoui.o
 cosmidtblnc.tmc.dep
+POPStblnc.tmc.dep
 *.err
 freemem.tmc
 TMbase.genui
 TMbase.tbl
+POPS.tbl
 Makefile
 *.exe
 cosmiddispnc

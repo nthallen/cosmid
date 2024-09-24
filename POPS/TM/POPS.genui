@@ -6,7 +6,7 @@
  1 POPS_P_mbar POPS P
  1 POPS_ccm POPS Flow
  1 POPS_Flow POPS Raw_ccs
- 1 POPS_Temp POPS T
+ 1 POPS_AirTemp POPS T
  1 POPS_Bin01 POPS Bins
  1 POPS_Bin02 POPS Bins
  1 POPS_Bin03 POPS Bins

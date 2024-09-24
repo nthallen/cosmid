@@ -1,23 +1,53 @@
 
 --------Frame Statistics-----------
-Major Frame: 1 minor frames, 1 Hz
-Minor Frame: 14 bytes, 1 Hz
+Major Frame: 3 minor frames, 1 Hz
+Minor Frame: 45 bytes, 3 Hz
 Effective Frame Dimensions:
-  1 Rows 14 Columns
-  1 rows/sec
-  112 bits/sec
-  Data:  80 bits/sec  71 %
-  Synch: 32 bits/sec  29 %
-  Empty: 0 bits/sec  0 %
+  3 Rows 45 Columns
+  3 rows/sec
+  1080 bits/sec
+  Data:  968 bits/sec  90 %
+  Synch: 96 bits/sec  9 %
+  Empty: 16 bits/sec  1 %
 -------End of Frame Statistics-----
 
 
 --------PCM Definition-------------
-1/1 Hz 2 bytes Datum MFCtr (1,0,0,2)
-1/1 Hz 4 bytes Datum SysTDrift (1,0,2,4)
-1/1 Hz 2 bytes Datum CPU_Pct (1,0,6,2)
-1/1 Hz 2 bytes Datum Disk (1,0,8,2)
-1/1 Hz 2 bytes Datum memused (1,0,10,2)
-1/1 Hz 2 bytes Datum Synch (1,0,12,2)
+3/1 Hz 2 bytes Datum MFCtr (1,0,0,2)
+3/1 Hz 2 bytes Datum Synch (1,0,43,2)
+1/1 Hz 111 bytes Group POPSgrp (3,0,2,41) (3,1,2,41) (3,2,2,29)
+1/1 Hz 1 bytes Member POPS_DrvStale (3,0,2,1)
+1/1 Hz 1 bytes Member POPS_Stale (3,0,3,1)
+1/1 Hz 1 bytes Member POPS_Srvr (3,0,4,1)
+1/1 Hz 4 bytes Member POPS_Bin16 (3,0,5,4)
+1/1 Hz 4 bytes Member POPS_Bin15 (3,0,9,4)
+1/1 Hz 4 bytes Member POPS_Bin14 (3,0,13,4)
+1/1 Hz 4 bytes Member POPS_Bin13 (3,0,17,4)
+1/1 Hz 4 bytes Member POPS_Bin12 (3,0,21,4)
+1/1 Hz 4 bytes Member POPS_Bin11 (3,0,25,4)
+1/1 Hz 4 bytes Member POPS_Bin10 (3,0,29,4)
+1/1 Hz 4 bytes Member POPS_Bin09 (3,0,33,4)
+1/1 Hz 4 bytes Member POPS_Bin08 (3,0,37,4)
+1/1 Hz 4 bytes Member POPS_Bin07 (3,0,41,2) (3,1,2,2)
+1/1 Hz 4 bytes Member POPS_Bin06 (3,1,4,4)
+1/1 Hz 4 bytes Member POPS_Bin05 (3,1,8,4)
+1/1 Hz 4 bytes Member POPS_Bin04 (3,1,12,4)
+1/1 Hz 4 bytes Member POPS_Bin03 (3,1,16,4)
+1/1 Hz 4 bytes Member POPS_Bin02 (3,1,20,4)
+1/1 Hz 4 bytes Member POPS_Bin01 (3,1,24,4)
+1/1 Hz 4 bytes Member POPS_AirTemp (3,1,28,4)
+1/1 Hz 4 bytes Member POPS_LD_Mon (3,1,32,4)
+1/1 Hz 4 bytes Member POPS_LDTemp (3,1,36,4)
+1/1 Hz 4 bytes Member POPS_Flow (3,1,40,3) (3,2,2,1)
+1/1 Hz 4 bytes Member POPS_P_mbar (3,2,3,4)
+1/1 Hz 4 bytes Member POPS_STD (3,2,7,4)
+1/1 Hz 4 bytes Member POPS_Baseline (3,2,11,4)
+1/1 Hz 4 bytes Member POPS_num_cc (3,2,15,4)
+1/1 Hz 4 bytes Member POPS_Part_Num (3,2,19,4)
+1/1 Hz 8 bytes Member POPS_Tdrift (3,2,23,8)
+1/1 Hz 4 bytes Datum SysTDrift (3,2,31,4)
+1/1 Hz 2 bytes Datum CPU_Pct (3,2,35,2)
+1/1 Hz 2 bytes Datum Disk (3,2,37,2)
+1/1 Hz 2 bytes Datum memused (3,2,39,2)
 -------End of PCM Definition-------
 

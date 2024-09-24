@@ -1,0 +1,40 @@
+POPS Full data reported
+  Date & Time & SSM => double time => Tdrift
+  gIntStatus 1 startup 3 run
+  gDataStatus 0 valid 1 too many particles 2 too much jitter
+  not_uint32(Part_Num)
+  gHistSum
+  not_nfloat(&PartCon_num_cc)
+  not_uint32(Baseline)
+  gBLTH (baseline plus threshold)
+  not_nfloat(&STD)
+  gMaxSTD
+  not_nfloat(&P_mbar) (MS5607)
+  Temp Celcius (MS5607)
+  gPumpLife Hours
+  # Peak width is an int, so related to the counter sample rate
+  gWidthSTD (std & mean of peak width)
+  gAW %.2f
+ ###  AI 0-6 %.2f
+  Flow cc/s
+  PumpFB rawai mv
+  LDTemp C
+  LaserFB rawai mv
+  LD_Mon rawai mv
+  AirTemp C
+  BatV V
+ ###  AO 0-1 %.2f
+  Laser_Current  V? 2.867V app. converts to 70 mA
+  Flow_Set V
+ ###
+  gBL_Start %u
+  gTH_Mult %.1f
+  gBins.nbins %u
+  gBins.logmin %.2f
+  gBins.logmax %.2f
+  ## ",%i,%u,%u,%i",
+  gSkip_Save, Skip n Between Save in peak files.
+  gMinPeakPts, minimum points to make a peak
+  gMaxPeakPts, maximum points in one peak
+  gRaw.pts     data points to save per second
+ ###  gHist[1-gBins.nbins]
