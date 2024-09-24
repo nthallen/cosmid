@@ -1,0 +1,22 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp5s0:
+      dhcp6: false
+      addresses:
+        - 10.11.97.100/24
+      routes:
+        - to: 10.11.97.0/24
+          via: 10.11.97.100
+    enp6s0:
+      dhcp6: false
+      dhcp4: true
+#     nameservers:
+#       addresses: [8.8.8.8,8.8.4.4]
+    enp7s0:
+      dhcp4: true
+      dhcp6: false
+    enp8s0:
+      dhcp4: true
+      dhcp6: false
