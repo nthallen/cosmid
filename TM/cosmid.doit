@@ -1,4 +1,6 @@
 display cosmiddisp -n disp
 client cosmidclt
+extraction cosmidjsonext -n json
+
 memo
 batchfile interact
