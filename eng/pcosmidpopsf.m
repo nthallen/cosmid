@@ -1,5 +1,5 @@
-function pengpopsf(varargin);
-% pengpopsf( [...] );
+function pcosmidpopsf(varargin);
+% pcosmidpopsf( [...] );
 % POPS Flow
 h = timeplot({'POPS_ccm'}, ...
       'POPS Flow', ...

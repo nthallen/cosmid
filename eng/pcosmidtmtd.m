@@ -1,5 +1,5 @@
-function pengtmtd(varargin);
-% pengtmtd( [...] );
+function pcosmidtmtd(varargin);
+% pcosmidtmtd( [...] );
 % T Mbase T Drift
 h = timeplot({'SysTDrift'}, ...
       'T Mbase T Drift', ...

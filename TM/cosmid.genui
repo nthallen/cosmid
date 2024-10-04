@@ -1,0 +1,4 @@
+HEADER COSMID Instrument
+MNEMONIC cosmid
+HOMEDIR COSMID_Data_Dir
+ROWS 20

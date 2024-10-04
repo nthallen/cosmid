@@ -1,5 +1,5 @@
-function pengpopshkldt(varargin);
-% pengpopshkldt( [...] );
+function pcosmidpopshkldt(varargin);
+% pcosmidpopshkldt( [...] );
 % POPS HK LD Temp
 h = timeplot({'POPS_LDTemp'}, ...
       'POPS HK LD Temp', ...

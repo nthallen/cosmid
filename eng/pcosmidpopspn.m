@@ -1,5 +1,5 @@
-function pengpopspn(varargin);
-% pengpopspn( [...] );
+function pcosmidpopspn(varargin);
+% pcosmidpopspn( [...] );
 % POPS Part Num
 h = timeplot({'POPS_Part_Num'}, ...
       'POPS Part Num', ...

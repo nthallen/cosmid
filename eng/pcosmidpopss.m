@@ -1,5 +1,5 @@
-function pengpopss(varargin);
-% pengpopss( [...] );
+function pcosmidpopss(varargin);
+% pcosmidpopss( [...] );
 % POPS Surface
 h = timeplot({'POPS_Surf_Area'}, ...
       'POPS Surface', ...

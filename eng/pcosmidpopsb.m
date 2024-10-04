@@ -1,5 +1,5 @@
-function pengpopsb(varargin);
-% pengpopsb( [...] );
+function pcosmidpopsb(varargin);
+% pcosmidpopsb( [...] );
 % POPS Bins
 h = timeplot({'POPS_Bin01','POPS_Bin02','POPS_Bin03','POPS_Bin04','POPS_Bin05','POPS_Bin06','POPS_Bin07','POPS_Bin08','POPS_Bin09','POPS_Bin10','POPS_Bin11','POPS_Bin12','POPS_Bin13','POPS_Bin14','POPS_Bin15','POPS_Bin16'}, ...
       'POPS Bins', ...

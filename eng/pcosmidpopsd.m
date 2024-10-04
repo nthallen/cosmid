@@ -1,5 +1,5 @@
-function pengpopsd(varargin);
-% pengpopsd( [...] );
+function pcosmidpopsd(varargin);
+% pcosmidpopsd( [...] );
 % POPS Drift
 h = timeplot({'POPS_Tdrift'}, ...
       'POPS Drift', ...

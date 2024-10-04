@@ -13,6 +13,13 @@ cosmidalgo.cc
 cosmidalgooui.cc
 cosmidalgo.o
 cosmidalgooui.o
+cosmidjsonext.cdf
+cosmidjsonextcdf.oui
+cosmidjsonextcdf.tmc
+cosmidjsonext.cc
+cosmidjsonextoui.cc
+cosmidjsonext.o
+cosmidjsonextoui.o
 doit.dep
 cosmidcmd.cc
 cosmidcmd.dat
@@ -46,6 +53,7 @@ Makefile
 *.exe
 cosmiddispnc
 cosmidalgo
+cosmidjsonext
 doit
 cosmidcltnc
 cosmidsrvr

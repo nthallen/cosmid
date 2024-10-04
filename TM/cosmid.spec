@@ -1,5 +1,6 @@
 # cosmid.spec
 tmcbase = base.tmc
+genuibase = cosmid.genui
 Module TMbase mode=ignore
 Module POPS
 
@@ -10,4 +11,5 @@ IGNORE = Makefile "*.exe"
 
 cosmiddisp : cosmid.tbl POPS.tbl
 cosmidalgo : cosmid.tma
+cosmidjsonext : $extbase $genuibase
 doit : cosmid.doit
