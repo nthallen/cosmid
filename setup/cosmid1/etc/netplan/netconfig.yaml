@@ -11,9 +11,14 @@ network:
           via: 10.11.97.100
     enp6s0:
       dhcp6: false
-      dhcp4: true
-#     nameservers:
-#       addresses: [8.8.8.8,8.8.4.4]
+      dhcp4: false
+      addresses:
+        - 10.245.83.75/25
+      routes:
+        - to: default
+          via: 10.245.83.1
+      nameservers:
+        addresses: [8.8.8.8,8.8.4.4]
     enp7s0:
       dhcp4: true
       dhcp6: false
