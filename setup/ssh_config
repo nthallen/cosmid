@@ -1,5 +1,5 @@
-host cosmid1 cosmid1.arp.harvard.edu 10.245.83.14
-hostname 10.245.83.14
+host cosmid1 cosmid1.arp.harvard.edu 10.245.83.75
+hostname 10.245.83.75
 ForwardAgent yes
 ForwardX11 yes
 ForwardX11Trusted yes
