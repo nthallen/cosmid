@@ -3,6 +3,7 @@ tmcbase = base.tmc
 genuibase = cosmid.genui
 Module TMbase mode=ignore
 Module POPS
+Module coretemps
 
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config

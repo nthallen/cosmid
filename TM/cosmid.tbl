@@ -1,8 +1,17 @@
 Input "TMbase.tbl";
+Input "coretemps.tbl";
+
+TMbaseCosmid {
+  HBox{ +-; Title: "System"; -+ };
+  [TMbase_data];
+  [coretemps];
+  VGlue 0+1;
+  [TMbase_times]
+}
 
 { HBox {
     |+;
-    [TMbaseB];
+    [TMbaseCosmid];
     |+;
   };
   -;

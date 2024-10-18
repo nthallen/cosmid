@@ -18,6 +18,7 @@ f = ne_dialg(f, 'add', 1, 0, 'pcosmidtmtd', 'T Drift' );
 f = ne_dialg(f, 'add', 1, 0, 'pcosmidtmcpu', 'CPU' );
 f = ne_dialg(f, 'add', 1, 0, 'pcosmidtmram', 'RAM' );
 f = ne_dialg(f, 'add', 1, 0, 'pcosmidtmd', 'Disk' );
+f = ne_dialg(f, 'add', 1, 0, 'pcosmidtmct', 'Core T' );
 f = ne_dialg(f, 'add', 0, 1, 'gcosmidpops', 'POPS' );
 f = ne_dialg(f, 'add', 1, 0, 'pcosmidpopsd', 'Drift' );
 f = ne_dialg(f, 'add', 1, 0, 'pcosmidpopspn', 'Part Num' );

@@ -2,6 +2,8 @@ freemem.tmc
 TMbase.genui
 TMbase.tbl
 POPS.tbl
+coretemps.genui
+coretemps.tbl
 cosmidtblnc.tmc
 POPStblnc.tmc
 cosmiddispnc.cc
@@ -49,6 +51,8 @@ freemem.tmc
 TMbase.genui
 TMbase.tbl
 POPS.tbl
+coretemps.genui
+coretemps.tbl
 Makefile
 *.exe
 cosmiddispnc

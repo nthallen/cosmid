@@ -15,11 +15,12 @@ else
   context_level = 1;
 end
 dfs.start_col;
-dfs.plot('tm', 'label', 'T Mbase', 'plots', {'tmtd','tmcpu','tmram','tmd'});
+dfs.plot('tm', 'label', 'T Mbase', 'plots', {'tmtd','tmcpu','tmram','tmd','tmct'});
 dfs.plot('tmtd','label','T Drift','vars',{'SysTDrift'});
 dfs.plot('tmcpu','label','CPU','vars',{'CPU_Pct'});
 dfs.plot('tmram','label','RAM','vars',{'memused'});
 dfs.plot('tmd','label','Disk','vars',{'Disk'});
+dfs.plot('tmct','label','Core T','vars',{'coretemp1','coretemp2','coretemp3','coretemp4'});
 dfs.plot('pops', 'label', 'POPS', 'plots', {'popsd','popspn','popsnum_cc','popss','popsv','popsp','popsf','popsr','popst','popsb'});
 dfs.plot('popsd','label','Drift','vars',{'POPS_Tdrift'});
 dfs.plot('popspn','label','Part Num','vars',{'POPS_Part_Num'});

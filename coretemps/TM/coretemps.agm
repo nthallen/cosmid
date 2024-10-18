@@ -1,0 +1,13 @@
+ModuleDef coretemps [ Panel= ] {
+  coretemps is a TMC-only module, so it is missing the DISTRIB
+  and CPPFLAGS entries or extra make and clean work.
+}
+
+mode (default) {
+  tmcbase = coretemps.tmc
+  colbase = coretemps_col.tmc
+  genuibase = coretemps.genui:coretemps.genui.in
+  - : coretemps.tbl:coretemps.tbl.in
+  IGNORE = coretemps.genui coretemps.tbl
+  OBJ = coretemps.genui coretemps.tbl
+}
