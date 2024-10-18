@@ -1,29 +1,3 @@
-%{
-#ifndef NO_SENSORS
-  #include <sensors/sensors.h>
-  sensors_chip_name const *coretemps_cn;
-#endif
-
-  void coretemp_init() {
-#ifndef NO_SENSORS
-    sensors_init(0);
-    int c = 3;
-    coretemps_cn = sensors_get_detected_chips(0, &c);
-    nl_assert(cn);
-#endif
-  }
-  
-  int8_t coretemp_read(int subf_num) {
-#ifndef NO_SENSORS
-    double val;
-    int rc = sensors_get_value(coretemps_cn, subf_num, &val);
-    return rc >= 0 ? (int8_t)val : -127;
-#else
-    return 0;
-#endif
-  }
-%}
-
 TM typedef int8_t coretemp_t {
   text "%3d";
   collect x = coretemp_read(x.address);
