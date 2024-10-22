@@ -1,0 +1,6 @@
+ModuleDef coretemps_select [ Panel= ] {
+  This is coretemps_select.agm.sensors
+  ln -s coretemps_select.agm.sensors coretemps_select.agm
+}
+
+Module coretemps Panel=@Panel@

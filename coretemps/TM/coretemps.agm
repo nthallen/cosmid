@@ -3,11 +3,19 @@ ModuleDef coretemps [ Panel= ] {
   and CPPFLAGS entries or extra make and clean work.
 }
 
-mode (default) {
+mode (default,no_sensors) {
   tmcbase = coretemps.tmc
   colbase = coretemps_col.tmc
   genuibase = coretemps.genui:coretemps.genui.in
   - : coretemps.tbl:coretemps.tbl.in
   IGNORE = coretemps.genui coretemps.tbl
   OBJ = coretemps.genui coretemps.tbl
+}
+
+mode (default) {
+  colbase = -lsensors
+}
+
+mode (no_sensors) {
+  CPPFLAGS = -DNO_SENSORS
 }
