@@ -16,25 +16,31 @@ extern void pkts_init_options(int argc, char **argv);
 
 #ifdef __cplusplus
 
-#include "dasio/interface.h"
+#include "dasio/cmd_reader.h"
+#include "dasio/client.h"
 
-class UserPkts_UDP : public DAS_IO::Interface {
+class UserPkts_UDP : public DAS_IO::Socket {
   public:
-    UserPkts_UDP(int udp_port);
-    bool protocol_input();
-    bool process_eof();
+    UserPkts_UDP(const char *service);
+    bool protocol_input() override;
+    bool process_eof() override;
   protected:
-    //bool tm_sync();
   private:
-    void Bind(int port);
-    int fillbuf();
-    int not_KW(char *KWbuf);
-    int udp_port;
+    // void Bind(int port);
+    // int fillbuf();
+    // int not_KW(char *KWbuf);
+    // int udp_port;
+};
+
+class Shutdown_UDP : public DAS_IO::Socket {
+  public:
+    Shutdown_UDP(const char *service);
+    void send_shutdown();
 };
 
 class POPS_Cmd : public DAS_IO::Cmd_reader {
   public:
-    inline POPS_Cmd() : DAS_IO::Cmd_reader("POPS", 80, "POPS") {}
+    inline POPS_Cmd(Shutdown_UDP *SD) : DAS_IO::Cmd_reader("POPS", 80, "POPS"), SD(SD) {}
     /**
      * Handles single-character commands:
      *   S: Send shutdown code '8' over UDP to POPS instrument
@@ -43,7 +49,8 @@ class POPS_Cmd : public DAS_IO::Cmd_reader {
      */
     bool app_input();
   private:
-    void send_shutdown();
+    // void send_shutdown();
+    Shutdown_UDP *SD;
 };
 
 class POPS_client : public DAS_IO::Client {
@@ -64,6 +71,8 @@ class POPS_client : public DAS_IO::Client {
   private:
     uint8_t srvr_Stale;
 };
+
+extern const char *pops_service;
 
 #endif // __cplusplus
 #endif // DPOPS_INT_H_INCLUDED

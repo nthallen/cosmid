@@ -2,6 +2,22 @@
 <include> cmd_reader
 <include> msg oui
 <include> cmd_reader
+<include> host_session
+<preceed> funcs_defined
+<include> "dasio/host_session.h"
+<include> "POPS_int.h"
+
+<init>
+  DAS_IO::hs_registry::add_host("POPS:10.11.97.50");
+
+<opts> "s:"
+<sort>
+  -s <service> to map to POPS instrument UDP port (pops)
+<switch>
+  case 's': pops_service = optarg; break;
+
+<unsort>
+Host_Session function POPS: hostname of POPS instrument (10.11.97.50)
 
 <package> appid_default
 <include> "dasio/appid.h"

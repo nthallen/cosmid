@@ -17,15 +17,22 @@
 #include "POPS_int.h"
 
 POPS_t POPS;
+const char *pops_service = "pops";
 
 int main(int argc, char **argv) {
   oui_init_options(argc, argv);
   DAS_IO::Loop ELoop;
-  UserPkts_UDP *Pkts = new UserPkts_UDP(10080); // constructor generated
+
+  UserPkts_UDP *Pkts = new UserPkts_UDP(pops_service);
+  Pkts->connect();
   ELoop.add_child(Pkts);
-  POPS_Cmd *Q = new POPS_Cmd();
+  
+  Shutdown_UDP *SD = new Shutdown_UDP(pops_service);
+
+  POPS_Cmd *Q = new POPS_Cmd(SD);
   Q->connect();
   ELoop.add_child(Q);
+
   DAS_IO::TM_data_sndr *TM =
     new DAS_IO::TM_data_sndr("POPS", 0, "POPS", &POPS, sizeof(POPS));
   TM->connect();
@@ -41,10 +48,10 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-UserPkts_UDP::UserPkts_UDP(int udp_port)
-    : DAS_IO::Interface("UDP", 512),
-      udp_port(udp_port) {
-  Bind(udp_port);
+UserPkts_UDP::UserPkts_UDP(const char *service)
+    : DAS_IO::Socket("UDPr", "POPS", service, 512, UDP_READ)
+{
+  // Bind(udp_port);
   // flush_input();
   setenv("TZ", "UTC0", 1); // Force UTC for mktime()
   // flags |= gflag(0);
@@ -229,18 +236,12 @@ bool UserPkts_UDP::protocol_input() {
   return false;
 }
 
-// bool UserPkts_UDP::tm_sync() {
-  // if (POPS.Stale < 255) ++POPS.Stale;
-  // return false;
-// }
-
 bool UserPkts_UDP::process_eof() {
-  msg(0, "%s: process_eof(): Re-binding UDP port %d",
-    iname, udp_port);
-  Bind(udp_port);
-  return false;
+  msg(0, "%s: process_eof(): Resetting UDP port", iname);
+  return reset();
 }
 
+#if 0
 void UserPkts_UDP::Bind(int port) {
   char service[10];
   struct addrinfo hints,*results, *p;
@@ -251,7 +252,7 @@ void UserPkts_UDP::Bind(int port) {
   snprintf(service, 10, "%d", port);
 
   memset(&hints, 0, sizeof(hints));	
-  hints.ai_family = AF_UNSPEC;		// don't care IPv4 of v6
+  hints.ai_family = AF_UNSPEC;		// don't care IPv4 or v6
   hints.ai_socktype = SOCK_DGRAM;
   hints.ai_flags = AI_PASSIVE;
     
@@ -281,6 +282,16 @@ void UserPkts_UDP::Bind(int port) {
       strerror(errno));
   flags |= DAS_IO::Interface::Fl_Read;
 }
+#endif
+
+Shutdown_UDP::Shutdown_UDP(const char *service)
+    : Socket("UDPw", "POPS", service, 0, UDP_WRITE)
+{}
+
+void Shutdown_UDP::send_shutdown()
+{
+  iwrite("8");
+}
 
 bool POPS_Cmd::app_input() {
   bool rv = false;
@@ -293,7 +304,7 @@ bool POPS_Cmd::app_input() {
         POPS_client::instance->forward(buf);
         break;
       case 'S': // Send Shutdown to POPS
-        send_shutdown();
+        SD->send_shutdown();
         break;
       case 'Q':
         rv = true;
@@ -308,6 +319,7 @@ bool POPS_Cmd::app_input() {
   return rv;
 }
 
+#if 0
 void POPS_Cmd::send_shutdown() {
   int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
   if (udp_sock == -1) {
@@ -324,6 +336,9 @@ void POPS_Cmd::send_shutdown() {
   hints.ai_canonname = 0;
   hints.ai_addr = 0;
   hints.ai_next = 0;
+  const char *hostname, *port;
+  hostname = hs_registry::query_host("POPS"));
+  
   if (getaddrinfo("10.11.97.50", "7079", &hints, &res)) {
     msg(MSG_ERROR, "%s: getaddrinfo for shutdown failed: %s",
       iname, strerror(errno));
@@ -348,9 +363,10 @@ void POPS_Cmd::send_shutdown() {
   }
   ::close(udp_sock);
 }
+#endif
 
 POPS_client::POPS_client() :
-      DAS_IO::Client("pops", 80, "10.11.97.50", "pops", 0),
+      DAS_IO::Client("pops", "POPS", "pops", 0, 80),
       srvr_Stale(0) {
   POPS.Srvr = 0;
   nl_assert(POPS_client::instance == 0);
@@ -359,15 +375,6 @@ POPS_client::POPS_client() :
   set_connect_timeout(5,0);
   flags |= gflag(0);
 }
-
-// bool POPS_client::POPS_connect() {
-  // POPS.Srvr = 0;
-  // conn_fail_reported = true;
-  // if (connect()) return true;
-  // TO.Set(5,0);
-  // flags |= Fl_Timeout;
-  // return false;
-// }
 
 bool POPS_client::app_connected() {
   forward("V\n");
