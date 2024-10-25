@@ -18,6 +18,7 @@
 
 <unsort>
 Host_Session function POPS: hostname of POPS instrument (10.11.97.50)
+Host_Session function UDPr: Interface IP for receiving UDP from POPS
 
 <package> appid_default
 <include> "dasio/appid.h"

@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 }
 
 UserPkts_UDP::UserPkts_UDP(const char *service)
-    : DAS_IO::Socket("UDPr", "POPS", service, 512, UDP_READ)
+    : DAS_IO::Socket("UDPr", "UDPr", service, 512, UDP_READ)
 {
   // Bind(udp_port);
   // flush_input();
