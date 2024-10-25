@@ -27,9 +27,9 @@ int main(int argc, char **argv) {
   Pkts->connect();
   ELoop.add_child(Pkts);
   
-  Shutdown_UDP *SD = new Shutdown_UDP(pops_service);
+  // Shutdown_UDP *SD = new Shutdown_UDP(pops_service);
 
-  POPS_Cmd *Q = new POPS_Cmd(SD);
+  POPS_Cmd *Q = new POPS_Cmd();
   Q->connect();
   ELoop.add_child(Q);
 
@@ -242,48 +242,6 @@ bool UserPkts_UDP::process_eof() {
 }
 
 #if 0
-void UserPkts_UDP::Bind(int port) {
-  char service[10];
-  struct addrinfo hints,*results, *p;
-  int err, ioflags;
-
-  if (port == 0)
-    msg( 3, "Invalid port in UserPkts_UDP: 0" );
-  snprintf(service, 10, "%d", port);
-
-  memset(&hints, 0, sizeof(hints));	
-  hints.ai_family = AF_UNSPEC;		// don't care IPv4 or v6
-  hints.ai_socktype = SOCK_DGRAM;
-  hints.ai_flags = AI_PASSIVE;
-    
-  err = getaddrinfo(NULL, 
-                    service,
-                    &hints,
-                    &results);
-  if (err)
-    msg( 3, "UserPkts_UDP::Bind: getaddrinfo error: %s",
-          gai_strerror(err) );
-  for(p=results; p!= NULL; p=p->ai_next) {
-    fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-    if (fd < 0)
-      msg( 2, "IWG1_UPD::Bind: socket error: %s", strerror(errno) );
-    else if ( bind(fd, p->ai_addr, p->ai_addrlen) < 0 )
-      msg( 2, "UserPkts_UDP::Bind: bind error: %s", strerror(errno) );
-    else break;
-  }
-  if (fd < 0)
-    msg(3, "Unable to bind UDP socket");
-    
-  ioflags = fcntl(fd, F_GETFL, 0);
-  if (ioflags != -1)
-    ioflags = fcntl(fd, F_SETFL, ioflags | O_NONBLOCK);
-  if (ioflags == -1)
-    msg( 3, "Error setting O_NONBLOCK on UDP socket: %s",
-      strerror(errno));
-  flags |= DAS_IO::Interface::Fl_Read;
-}
-#endif
-
 Shutdown_UDP::Shutdown_UDP(const char *service)
     : Socket("UDPw", "POPS", service, 0, UDP_WRITE)
 {}
@@ -292,6 +250,7 @@ void Shutdown_UDP::send_shutdown()
 {
   iwrite("8");
 }
+#endif
 
 bool POPS_Cmd::app_input() {
   bool rv = false;
@@ -303,9 +262,11 @@ bool POPS_Cmd::app_input() {
         nl_assert(POPS_client::instance);
         POPS_client::instance->forward(buf);
         break;
+#if 0
       case 'S': // Send Shutdown to POPS
         SD->send_shutdown();
         break;
+#endif
       case 'Q':
         rv = true;
         break;
