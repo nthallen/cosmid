@@ -1,7 +1,20 @@
 <package> POPS_srvr
 <include> msg oui
+<include> "POPS_srvr.h"
+
+<init>
+  DAS_IO::hs_registry::add_host("POPS:10.11.97.50");
+
+<opts> "s:"
+<sort>
+  -s <service> to map to POPS instrument UDP port (pops)
+<switch>
+  case 's': pops_service = optarg; break;
+
+<unsort>
+Host_Session function POPS: hostname of POPS instrument (10.11.97.50)
 
 <package> appid_default
 <include> "dasio/appid.h"
 <defs>
-  DAS_IO::AppID_t DAS_IO::AppID("pops", "POPS server", "V1.0");
+  DAS_IO::AppID_t DAS_IO::AppID("POPS_srvr", "POPS server", "V1.1");

@@ -7,6 +7,13 @@ using namespace DAS_IO;
 
 typedef enum {POPS_init, POPS_idle, POPS_active, POPS_shutdown} POPS_status_t;
 
+class Shutdown_UDP : public DAS_IO::Socket {
+  public:
+    Shutdown_UDP(const char *service);
+    void send_shutdown();
+    static Shutdown_UDP *SD;
+};
+
 class pops_socket : public DAS_IO::Serverside_client {
   public:
     inline pops_socket(Authenticator *Auth, const char *iname) :
@@ -21,5 +28,7 @@ class pops_socket : public DAS_IO::Serverside_client {
 };
 
 pops_socket *new_pops_socket(Authenticator *Auth, SubService *SS);
+
+extern const char *pops_service;
 
 #endif

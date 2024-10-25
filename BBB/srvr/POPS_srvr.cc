@@ -20,6 +20,7 @@ POPS_Server
 #include <unistd.h>
 #include "POPS_srvr.h"
 #include "dasio/msg.h"
+#include "dasio/appid.h"
 #include "nl_assert.h"
 
 POPS_status_t POPS_status = POPS_idle;
@@ -83,6 +84,9 @@ bool pops_socket::send_status() {
 }
 
 bool pops_socket::send_shutdown() {
+#if 1
+  Shutdown_UDP::SD->send_shutdown();
+#else
   int udp_sock = socket(AF_INET, SOCK_DGRAM, 0);
   if (udp_sock == -1) {
     msg(MSG_ERROR, "%s: Unable to create UDP socket for shutdown: %s",
@@ -121,6 +125,7 @@ bool pops_socket::send_shutdown() {
       iname, msglen, nb);
   }
   ::close(udp_sock);
+#endif
   return true;
 }
 
@@ -130,13 +135,31 @@ pops_socket *new_pops_socket(Authenticator *Auth, SubService *SS) {
   return pops;
 }
 
+Shutdown_UDP::Shutdown_UDP(const char *service)
+    : Socket("UDPw", "POPS", service, 0, UDP_WRITE)
+{}
+
+void Shutdown_UDP::send_shutdown()
+{
+  iwrite("8");
+}
+
+Shutdown_UDP *Shutdown_UDP::SD;
+
+const char *pops_service = "pops";
+
 int main(int argc, char **argv) {
   oui_init_options(argc, argv);
   Server server("pops");
   server.add_subservice(new SubService("pops",
       (socket_clone_t)new_pops_socket, (void*)0));
-  msg(0, "Starting");
+
+  Shutdown_UDP::SD = new Shutdown_UDP(pops_service);
+  server.ELoop.add_child(Shutdown_UDP::SD);
+  Shutdown_UDP::SD->connect();
+  
+  AppID.report_startup();
   server.Start(Server::Srv_TCP);
-  msg(0, "Terminating");
+  AppID.report_startup();
   return 0;
 }
