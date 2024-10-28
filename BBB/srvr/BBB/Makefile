@@ -8,7 +8,7 @@ OBJ = interface.o socket.o server.o loop.o msg.o \
 
 DESTDIR = /root/SW/bin
 
-.PHONY : all clean install install-service install-config
+.PHONY : all clean diffs install install-service install-config
 
 all : POPS_srvr
 
@@ -28,6 +28,11 @@ install-service : pops_server.service
 install-config : interfaces POPS_BBB.cfg
 	cp interfaces /etc/network/
 	cp POPS_BBB.cfg /media/uSD/
+
+diffs :
+	diff /etc/network/interfaces interfaces
+	diff /media/uSD/POPS_BBB.cfg POPS_BBB.cfg
+	diff /lib/systemd/system/pops_server.service pops_server.service
 
 clean :
 	rm -f *.o POPS_srvr
