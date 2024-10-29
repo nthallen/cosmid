@@ -6,5 +6,6 @@
   Launch    tm_gen  cosmidcol -v
   Launch    cmd     cosmidsrvr -H srvr: -S: -v
   Launch    -       POPS -H UDPr:10.11.97.100
+  Launch    -       POPS -H UDPr:10.11.97.100 -H POPS:10.11.97.51 -s pops2 -n POPS2
   Launch    -       tmdf
   Launch    -TMC-   cosmidalgo

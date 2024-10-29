@@ -1,0 +1,11 @@
+%INTERFACE <@pfx@>
+
+&command
+  : @pfx@ Start * { if_@pfx@.Turf("B\n"); }
+# : @pfx@ Shutdown * { if_@pfx@.Turf("S\n"); }
+  : @pfx@ Shutdown * { if_@pfx@.Turf("E\n"); }
+  : @pfx@ Shutdown Force * { if_@pfx@.Turf("F\n"); }
+# : @pfx@ Server Shutdown * { if_@pfx@.Turf("E\n"); }
+# : @pfx@ Server Shutdown Force * { if_@pfx@.Turf("F\n"); }
+  : @pfx@ Driver Quit * { if_@pfx@.Turf("Q\n"); }
+  ;

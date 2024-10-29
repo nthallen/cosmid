@@ -1,4 +1,4 @@
 %{
   #include "POPS.h"
-  POPS_t POPS;
+  POPS_t @pfx@;
 %}

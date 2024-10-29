@@ -1,17 +1,23 @@
-ModuleDef POPS [ tbl_name= ] {
+ModuleDef POPS [ pfx=POPS tbl_name= ] {
 }
 
-tmcbase = POPS.tmc
-tmcbase = POPS_conv.tmc
-colbase = POPS_col.tmc
-cmdbase = POPS.cmd
-genuibase = POPS.genui
-- : POPS.tbl:POPS.tbl.in
-DISTRIB = @MODDIR@/../POPS
-CPPFLAGS = -I @MODDIR@/..
-OBJ = POPS.tbl
-IGNORE = POPS.tbl
+mode (default, server) {
+  tmcbase = POPS.tmc
+  tmcbase = @pfx@_inst.tmc:POPS_inst.tmc.in
+  tmcbase = @pfx@_conv.tmc:POPS_conv.tmc.in
+  colbase = @pfx@_col.tmc:POPS_col.tmc.in
+  cmdbase = @pfx@.cmd:POPS.cmd.in
+  genuibase = @pfx@.genui:POPS.genui.in
+  - : @pfx@.tbl:POPS.tbl.in
+  CPPFLAGS = -I @MODDIR@/..
+  OBJ = @pfx@_inst.tmc @pfx@_conv.tmc @pfx@_col.tmc
+  OBJ = @pfx@.cmd @pfx@.genui @pfx@.tbl
+  IGNORE = @pfx@_inst.tmc @pfx@_conv.tmc @pfx@_col.tmc
+  IGNORE = @pfx@.cmd @pfx@.genui @pfx@.tbl
+}
 
+mode (server) {
+  DISTRIB = @MODDIR@/../POPS
 %%
 .PHONY : clean-POPS @MODDIR@/../POPS
 @MODDIR@/../POPS :
@@ -19,3 +25,4 @@ IGNORE = POPS.tbl
 clean-dist : clean-POPS
 clean-POPS :
 	$(MAKE) --directory=@MODDIR@/.. clean
+}

@@ -40,7 +40,7 @@ class Shutdown_UDP : public DAS_IO::Socket {
 
 class POPS_Cmd : public DAS_IO::Cmd_reader {
   public:
-    inline POPS_Cmd() : DAS_IO::Cmd_reader("POPS", 80, "POPS") {}
+    inline POPS_Cmd(const char *channel) : DAS_IO::Cmd_reader("cmd", 80, channel) {}
     /**
      * Handles single-character commands:
      *   S: Send shutdown code '8' over UDP to POPS instrument

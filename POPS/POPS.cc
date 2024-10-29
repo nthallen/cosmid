@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include "dasio/appid.h"
 #include "dasio/msg.h"
 #include "dasio/quit.h"
 #include "dasio/tm_data_sndr.h"
@@ -16,12 +17,15 @@
 #include "oui.h"
 #include "POPS_int.h"
 
+using namespace DAS_IO;
+
 POPS_t POPS;
 const char *pops_service = "pops";
 
 int main(int argc, char **argv) {
   oui_init_options(argc, argv);
   DAS_IO::Loop ELoop;
+  const char *name = AppID.name;
 
   UserPkts_UDP *Pkts = new UserPkts_UDP(pops_service);
   Pkts->connect();
@@ -29,12 +33,12 @@ int main(int argc, char **argv) {
   
   // Shutdown_UDP *SD = new Shutdown_UDP(pops_service);
 
-  POPS_Cmd *Q = new POPS_Cmd();
+  POPS_Cmd *Q = new POPS_Cmd(name);
   Q->connect();
   ELoop.add_child(Q);
 
   DAS_IO::TM_data_sndr *TM =
-    new DAS_IO::TM_data_sndr("POPS", 0, "POPS", &POPS, sizeof(POPS));
+    new DAS_IO::TM_data_sndr("TM", 0, name, &POPS, sizeof(POPS));
   TM->connect();
   ELoop.add_child(TM);
   POPS_client *clt = new POPS_client();
