@@ -182,6 +182,7 @@ bool UserPkts_UDP::protocol_input() {
   buft.tm_hour = hour;
   buft.tm_min = minute;
   buft.tm_sec = second;
+  buft.tm_isdst = 0;
   ltime = mktime(&buft);
   if (ltime == (le_time_t)(-1)) {
     report_err("%s: mktime returned error", iname);
