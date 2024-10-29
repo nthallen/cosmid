@@ -1,40 +1,40 @@
 @tbl_name@ {
-  HBox { -+; Title: POPS; +- };
+  HBox { -+; Title: "@pfx@"; +- };
   HBox { +|+;
     {
-      {Stale: HBox { (POPS_DrvStale,3); "/"; (POPS_Stale,3) } (POPS_Srvr,4) };
-      Tdrift: (POPS_Tdrift,8) sec;
-      Part_Num: (POPS_Part_Num,8);
-      num_cc: (POPS_num_cc,8) "cc-1";
-      Baseline: (POPS_Baseline,8);
-      STD:    (POPS_STD,8);
-      P_mbar: (POPS_P_mbar,8) mbar;
-      Flow:   (POPS_ccm,8)   ccm;
-      LDTemp: (POPS_LDTemp,8) C;
-      LD_Mon: (POPS_LD_Mon,8);
-      Temp:   (POPS_AirTemp,8)   C;
+      {Stale: HBox { (@pfx@_DrvStale,3); "/"; (@pfx@_Stale,3) } (@pfx@_Srvr,4) };
+      Tdrift: (@pfx@_Tdrift,8) sec;
+      Part_Num: (@pfx@_Part_Num,8);
+      num_cc: (@pfx@_num_cc,8) "cc-1";
+      Baseline: (@pfx@_Baseline,8);
+      STD:    (@pfx@_STD,8);
+      P_mbar: (@pfx@_P_mbar,8) mbar;
+      Flow:   (@pfx@_ccm,8)   ccm;
+      LDTemp: (@pfx@_LDTemp,8) C;
+      LD_Mon: (@pfx@_LD_Mon,8);
+      Temp:   (@pfx@_AirTemp,8)   C;
     }; +|+; {
       HBox {
         {
-	  Bin01:  (POPS_Bin01,8);
-	  Bin02:  (POPS_Bin02,8);
-	  Bin03:  (POPS_Bin03,8);
-	  Bin04:  (POPS_Bin04,8);
-	  Bin05:  (POPS_Bin05,8);
-	  Bin06:  (POPS_Bin06,8);
-	  Bin07:  (POPS_Bin07,8);
-	  Bin08:  (POPS_Bin08,8);
-    Surf:   (POPS_Surf_Area,8);
+	  Bin01:  (@pfx@_Bin01,8);
+	  Bin02:  (@pfx@_Bin02,8);
+	  Bin03:  (@pfx@_Bin03,8);
+	  Bin04:  (@pfx@_Bin04,8);
+	  Bin05:  (@pfx@_Bin05,8);
+	  Bin06:  (@pfx@_Bin06,8);
+	  Bin07:  (@pfx@_Bin07,8);
+	  Bin08:  (@pfx@_Bin08,8);
+    Surf:   (@pfx@_Surf_Area,8);
 	}; +|+; {
-	  Bin09:  (POPS_Bin09,8);
-	  Bin10:  (POPS_Bin10,8);
-	  Bin11:  (POPS_Bin11,8);
-	  Bin12:  (POPS_Bin12,8);
-	  Bin13:  (POPS_Bin13,8);
-	  Bin14:  (POPS_Bin14,8);
-	  Bin15:  (POPS_Bin15,8);
-	  Bin16:  (POPS_Bin16,8);
-    Vol:    (POPS_Vol_Density,8);
+	  Bin09:  (@pfx@_Bin09,8);
+	  Bin10:  (@pfx@_Bin10,8);
+	  Bin11:  (@pfx@_Bin11,8);
+	  Bin12:  (@pfx@_Bin12,8);
+	  Bin13:  (@pfx@_Bin13,8);
+	  Bin14:  (@pfx@_Bin14,8);
+	  Bin15:  (@pfx@_Bin15,8);
+	  Bin16:  (@pfx@_Bin16,8);
+    Vol:    (@pfx@_Vol_Density,8);
 	}
       };
       +-+;

@@ -30,9 +30,9 @@ install-config : interfaces POPS_BBB.cfg
 	cp POPS_BBB.cfg /media/uSD/
 
 diffs :
-	diff /etc/network/interfaces interfaces
-	diff /media/uSD/POPS_BBB.cfg POPS_BBB.cfg
-	diff /lib/systemd/system/pops_server.service pops_server.service
+	-diff /etc/network/interfaces interfaces
+	-diff /media/uSD/POPS_BBB.cfg POPS_BBB.cfg
+	-diff /lib/systemd/system/pops_server.service pops_server.service
 
 clean :
 	rm -f *.o POPS_srvr
