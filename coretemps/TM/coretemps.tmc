@@ -1,8 +1,11 @@
 TM typedef int8_t coretemp_t {
   text "%3d";
-  collect x = coretemp_read(x.address);
+  /* collect x = coretemp_read(x.address); */
 }
-TM 1 Hz coretemp_t coretemp1; Address coretemp1 0;
-TM 1 Hz coretemp_t coretemp2; Address coretemp2 4;
-TM 1 Hz coretemp_t coretemp3; Address coretemp3 8;
-TM 1 Hz coretemp_t coretemp4; Address coretemp4 12;
+TM 1 Hz coretemp_t coretemp[4];
+collect coretemp {
+  coretemp[0] = coretemp_read(0);
+  coretemp[1] = coretemp_read(4);
+  coretemp[2] = coretemp_read(8);
+  coretemp[3] = coretemp_read(12);
+}

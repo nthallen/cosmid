@@ -10,22 +10,7 @@ TM 1 Hz POPS_float_t @pfx@_Flow;
 TM 1 Hz POPS_float_t @pfx@_LDTemp;
 TM 1 Hz POPS_float_t @pfx@_LD_Mon;
 TM 1 Hz POPS_float_t @pfx@_AirTemp;
-TM 1 Hz POPS_Counts_t @pfx@_Bin01;
-TM 1 Hz POPS_Counts_t @pfx@_Bin02;
-TM 1 Hz POPS_Counts_t @pfx@_Bin03;
-TM 1 Hz POPS_Counts_t @pfx@_Bin04;
-TM 1 Hz POPS_Counts_t @pfx@_Bin05;
-TM 1 Hz POPS_Counts_t @pfx@_Bin06;
-TM 1 Hz POPS_Counts_t @pfx@_Bin07;
-TM 1 Hz POPS_Counts_t @pfx@_Bin08;
-TM 1 Hz POPS_Counts_t @pfx@_Bin09;
-TM 1 Hz POPS_Counts_t @pfx@_Bin10;
-TM 1 Hz POPS_Counts_t @pfx@_Bin11;
-TM 1 Hz POPS_Counts_t @pfx@_Bin12;
-TM 1 Hz POPS_Counts_t @pfx@_Bin13;
-TM 1 Hz POPS_Counts_t @pfx@_Bin14;
-TM 1 Hz POPS_Counts_t @pfx@_Bin15;
-TM 1 Hz POPS_Counts_t @pfx@_Bin16;
+TM 1 Hz POPS_Counts_t @pfx@_Bin[16];
 TM 1 Hz POPS_Srvr_t @pfx@_Srvr;
 TM 1 Hz POPS_Stale_t @pfx@_Stale;
 TM 1 Hz POPS_Stale_t @pfx@_DrvStale;
@@ -39,12 +24,8 @@ POPS_float_t @pfx@_ccm; Invalidate @pfx@_ccm;
 Group @pfx@_grp (
     @pfx@_Tdrift, @pfx@_Part_Num, @pfx@_num_cc, @pfx@_Baseline,
     @pfx@_STD, @pfx@_P_mbar, @pfx@_Flow, @pfx@_LDTemp,
-    @pfx@_LD_Mon, @pfx@_AirTemp, @pfx@_Bin01, @pfx@_Bin02,
-    @pfx@_Bin03, @pfx@_Bin04, @pfx@_Bin05, @pfx@_Bin06,
-    @pfx@_Bin07, @pfx@_Bin08, @pfx@_Bin09, @pfx@_Bin10,
-    @pfx@_Bin11, @pfx@_Bin12, @pfx@_Bin13, @pfx@_Bin14,
-    @pfx@_Bin15, @pfx@_Bin16, @pfx@_Srvr, @pfx@_Stale,
-    @pfx@_DrvStale) {
+    @pfx@_LD_Mon, @pfx@_AirTemp, @pfx@_Bin, @pfx@_Srvr,
+    @pfx@_Stale, @pfx@_DrvStale) {
   @pfx@_DrvStale = @pfx@_obj->Stale(255);
   if (@pfx@_DrvStale == 0) {
     @pfx@_Tdrift = dtime() - @pfx@.Time;
@@ -57,22 +38,22 @@ Group @pfx@_grp (
     @pfx@_LDTemp = @pfx@.LDTemp;
     @pfx@_LD_Mon = @pfx@.LD_Mon;
     @pfx@_AirTemp = @pfx@.AirTemp;
-    @pfx@_Bin01 = @pfx@.Bin01;
-    @pfx@_Bin02 = @pfx@.Bin02;
-    @pfx@_Bin03 = @pfx@.Bin03;
-    @pfx@_Bin04 = @pfx@.Bin04;
-    @pfx@_Bin05 = @pfx@.Bin05;
-    @pfx@_Bin06 = @pfx@.Bin06;
-    @pfx@_Bin07 = @pfx@.Bin07;
-    @pfx@_Bin08 = @pfx@.Bin08;
-    @pfx@_Bin09 = @pfx@.Bin09;
-    @pfx@_Bin10 = @pfx@.Bin10;
-    @pfx@_Bin11 = @pfx@.Bin11;
-    @pfx@_Bin12 = @pfx@.Bin12;
-    @pfx@_Bin13 = @pfx@.Bin13;
-    @pfx@_Bin14 = @pfx@.Bin14;
-    @pfx@_Bin15 = @pfx@.Bin15;
-    @pfx@_Bin16 = @pfx@.Bin16;
+    @pfx@_Bin[0]  = @pfx@.Bin01;
+    @pfx@_Bin[1]  = @pfx@.Bin02;
+    @pfx@_Bin[2]  = @pfx@.Bin03;
+    @pfx@_Bin[3]  = @pfx@.Bin04;
+    @pfx@_Bin[4]  = @pfx@.Bin05;
+    @pfx@_Bin[5]  = @pfx@.Bin06;
+    @pfx@_Bin[6]  = @pfx@.Bin07;
+    @pfx@_Bin[7]  = @pfx@.Bin08;
+    @pfx@_Bin[8]  = @pfx@.Bin09;
+    @pfx@_Bin[9]  = @pfx@.Bin10;
+    @pfx@_Bin[10] = @pfx@.Bin11;
+    @pfx@_Bin[11] = @pfx@.Bin12;
+    @pfx@_Bin[12] = @pfx@.Bin13;
+    @pfx@_Bin[13] = @pfx@.Bin14;
+    @pfx@_Bin[14] = @pfx@.Bin15;
+    @pfx@_Bin[15] = @pfx@.Bin16;
     @pfx@_Srvr  = @pfx@.Srvr;
     @pfx@_Stale = @pfx@.Stale;
   }

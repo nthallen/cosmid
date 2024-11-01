@@ -16,26 +16,26 @@
     }; +|+; {
       HBox {
         {
-	  Bin01:  (@pfx@_Bin01,8);
-	  Bin02:  (@pfx@_Bin02,8);
-	  Bin03:  (@pfx@_Bin03,8);
-	  Bin04:  (@pfx@_Bin04,8);
-	  Bin05:  (@pfx@_Bin05,8);
-	  Bin06:  (@pfx@_Bin06,8);
-	  Bin07:  (@pfx@_Bin07,8);
-	  Bin08:  (@pfx@_Bin08,8);
-    Surf:   (@pfx@_Surf_Area,8);
-	}; +|+; {
-	  Bin09:  (@pfx@_Bin09,8);
-	  Bin10:  (@pfx@_Bin10,8);
-	  Bin11:  (@pfx@_Bin11,8);
-	  Bin12:  (@pfx@_Bin12,8);
-	  Bin13:  (@pfx@_Bin13,8);
-	  Bin14:  (@pfx@_Bin14,8);
-	  Bin15:  (@pfx@_Bin15,8);
-	  Bin16:  (@pfx@_Bin16,8);
-    Vol:    (@pfx@_Vol_Density,8);
-	}
+          Bin01:  ("@pfx@_Bin[0]",8);
+          Bin02:  ("@pfx@_Bin[1]",8);
+          Bin03:  ("@pfx@_Bin[2]",8);
+          Bin04:  ("@pfx@_Bin[3]",8);
+          Bin05:  ("@pfx@_Bin[4]",8);
+          Bin06:  ("@pfx@_Bin[5]",8);
+          Bin07:  ("@pfx@_Bin[6]",8);
+          Bin08:  ("@pfx@_Bin[7]",8);
+          Surf:   (@pfx@_Surf_Area,8);
+        }; +|+; {
+          Bin09:  ("@pfx@_Bin[8]",8);
+          Bin10:  ("@pfx@_Bin[9]",8);
+          Bin11:  ("@pfx@_Bin[10]",8);
+          Bin12:  ("@pfx@_Bin[11]",8);
+          Bin13:  ("@pfx@_Bin[12]",8);
+          Bin14:  ("@pfx@_Bin[13]",8);
+          Bin15:  ("@pfx@_Bin[14]",8);
+          Bin16:  ("@pfx@_Bin[15]",8);
+          Vol:    (@pfx@_Vol_Density,8);
+        }
       };
       +-+;
       HBox { HGlue 0+1; { (flttime,9) MFCtr: (MFCtr,5) } }

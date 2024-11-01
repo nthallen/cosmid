@@ -3,22 +3,22 @@ POPS_Area_Density_t @pfx@_Surf_Area; Invalidate @pfx@_Surf_Area;
 
 { @pfx@_Surf_Area = (@pfx@_Srvr == 2 && @pfx@_Stale == 0) ?
     3.14159265358 * @pfx@_num_cc * (
-      POPS_EXP2(128.28179425) * @pfx@_Bin01 +
-      POPS_EXP2(139.3023049)  * @pfx@_Bin02 +
-      POPS_EXP2(152.2375759)  * @pfx@_Bin03 +
-      POPS_EXP2(167.88185685) * @pfx@_Bin04 +
-      POPS_EXP2(187.2672267)  * @pfx@_Bin05 +
-      POPS_EXP2(211.5566661)  * @pfx@_Bin06 +
-      POPS_EXP2(264.64054175) * @pfx@_Bin07 +
-      POPS_EXP2(359.3609217)  * @pfx@_Bin08 +
-      POPS_EXP2(454.92921015) * @pfx@_Bin09 +
-      POPS_EXP2(540.42298755) * @pfx@_Bin10 +
-      POPS_EXP2(841.0467569)  * @pfx@_Bin11 +
-      POPS_EXP2(1227.847511)  * @pfx@_Bin12 +
-      POPS_EXP2(1512.8310775) * @pfx@_Bin13 +
-      POPS_EXP2(1851.4034985) * @pfx@_Bin14 +
-      POPS_EXP2(2302.7662475) * @pfx@_Bin15 +
-      POPS_EXP2(3042.7116435) * @pfx@_Bin16
+      POPS_EXP2(128.28179425) * @pfx@_Bin[0] +
+      POPS_EXP2(139.3023049)  * @pfx@_Bin[1] +
+      POPS_EXP2(152.2375759)  * @pfx@_Bin[2] +
+      POPS_EXP2(167.88185685) * @pfx@_Bin[3] +
+      POPS_EXP2(187.2672267)  * @pfx@_Bin[4] +
+      POPS_EXP2(211.5566661)  * @pfx@_Bin[5] +
+      POPS_EXP2(264.64054175) * @pfx@_Bin[6] +
+      POPS_EXP2(359.3609217)  * @pfx@_Bin[7] +
+      POPS_EXP2(454.92921015) * @pfx@_Bin[8] +
+      POPS_EXP2(540.42298755) * @pfx@_Bin[9] +
+      POPS_EXP2(841.0467569)  * @pfx@_Bin[10] +
+      POPS_EXP2(1227.847511)  * @pfx@_Bin[11] +
+      POPS_EXP2(1512.8310775) * @pfx@_Bin[12] +
+      POPS_EXP2(1851.4034985) * @pfx@_Bin[13] +
+      POPS_EXP2(2302.7662475) * @pfx@_Bin[14] +
+      POPS_EXP2(3042.7116435) * @pfx@_Bin[15]
     )/(@pfx@_Part_Num * 1e6) : -99999.99;
   Validate @pfx@_Surf_Area;
 }
@@ -32,22 +32,22 @@ POPS_Volume_Density_t @pfx@_Vol_Density; Invalidate @pfx@_Vol_Density;
 
 { @pfx@_Vol_Density = (@pfx@_Srvr == 2 && @pfx@_Stale == 0) ?
     (3.14159265358/6) * @pfx@_num_cc * (
-      POPS_EXP3(128.28179425) * @pfx@_Bin01 +
-      POPS_EXP3(139.3023049)  * @pfx@_Bin02 +
-      POPS_EXP3(152.2375759)  * @pfx@_Bin03 +
-      POPS_EXP3(167.88185685) * @pfx@_Bin04 +
-      POPS_EXP3(187.2672267)  * @pfx@_Bin05 +
-      POPS_EXP3(211.5566661)  * @pfx@_Bin06 +
-      POPS_EXP3(264.64054175) * @pfx@_Bin07 +
-      POPS_EXP3(359.3609217)  * @pfx@_Bin08 +
-      POPS_EXP3(454.92921015) * @pfx@_Bin09 +
-      POPS_EXP3(540.42298755) * @pfx@_Bin10 +
-      POPS_EXP3(841.0467569)  * @pfx@_Bin11 +
-      POPS_EXP3(1227.847511)  * @pfx@_Bin12 +
-      POPS_EXP3(1512.8310775) * @pfx@_Bin13 +
-      POPS_EXP3(1851.4034985) * @pfx@_Bin14 +
-      POPS_EXP3(2302.7662475) * @pfx@_Bin15 +
-      POPS_EXP3(3042.7116435) * @pfx@_Bin16
+      POPS_EXP3(128.28179425) * @pfx@_Bin[0] +
+      POPS_EXP3(139.3023049)  * @pfx@_Bin[1] +
+      POPS_EXP3(152.2375759)  * @pfx@_Bin[2] +
+      POPS_EXP3(167.88185685) * @pfx@_Bin[3] +
+      POPS_EXP3(187.2672267)  * @pfx@_Bin[4] +
+      POPS_EXP3(211.5566661)  * @pfx@_Bin[5] +
+      POPS_EXP3(264.64054175) * @pfx@_Bin[6] +
+      POPS_EXP3(359.3609217)  * @pfx@_Bin[7] +
+      POPS_EXP3(454.92921015) * @pfx@_Bin[8] +
+      POPS_EXP3(540.42298755) * @pfx@_Bin[9] +
+      POPS_EXP3(841.0467569)  * @pfx@_Bin[10] +
+      POPS_EXP3(1227.847511)  * @pfx@_Bin[11] +
+      POPS_EXP3(1512.8310775) * @pfx@_Bin[12] +
+      POPS_EXP3(1851.4034985) * @pfx@_Bin[13] +
+      POPS_EXP3(2302.7662475) * @pfx@_Bin[14] +
+      POPS_EXP3(3042.7116435) * @pfx@_Bin[15]
     )/(@pfx@_Part_Num * 1e9) : -99999.99;
   Validate @pfx@_Vol_Density;
 }

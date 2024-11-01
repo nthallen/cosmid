@@ -1,4 +1,1 @@
- 1 coretemp1 @Panel@TMbase CoreT
- 1 coretemp2 @Panel@TMbase CoreT
- 1 coretemp3 @Panel@TMbase CoreT
- 1 coretemp4 @Panel@TMbase CoreT
+ 1 coretemp[4] @Panel@TMbase CoreT

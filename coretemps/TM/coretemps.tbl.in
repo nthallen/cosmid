@@ -1,4 +1,4 @@
 coretemps {
-  CoreT: (coretemp1,3) (coretemp2,3) C;
-  ""     (coretemp3,3) (coretemp4,3) C;
+  CoreT: ("coretemp[0]",3) ("coretemp[1]",3) C;
+  ""     ("coretemp[2]",3) ("coretemp[3]",3) C;
 }

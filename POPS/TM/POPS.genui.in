@@ -7,22 +7,7 @@
  1 @pfx@_ccm @pfx@ Flow
  1 @pfx@_Flow @pfx@ Raw_ccs
  1 @pfx@_AirTemp @pfx@ T
- 1 @pfx@_Bin01 @pfx@ Bins
- 1 @pfx@_Bin02 @pfx@ Bins
- 1 @pfx@_Bin03 @pfx@ Bins
- 1 @pfx@_Bin04 @pfx@ Bins
- 1 @pfx@_Bin05 @pfx@ Bins
- 1 @pfx@_Bin06 @pfx@ Bins
- 1 @pfx@_Bin07 @pfx@ Bins
- 1 @pfx@_Bin08 @pfx@ Bins
- 1 @pfx@_Bin09 @pfx@ Bins
- 1 @pfx@_Bin10 @pfx@ Bins
- 1 @pfx@_Bin11 @pfx@ Bins
- 1 @pfx@_Bin12 @pfx@ Bins
- 1 @pfx@_Bin13 @pfx@ Bins
- 1 @pfx@_Bin14 @pfx@ Bins
- 1 @pfx@_Bin15 @pfx@ Bins
- 1 @pfx@_Bin16 @pfx@ Bins
+ 1 @pfx@_Bin[16] @pfx@ Bins
 
  1 @pfx@_STD @pfx@_HK STD
  1 @pfx@_LDTemp @pfx@_HK LDTemp
