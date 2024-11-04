@@ -1,18 +1,18 @@
- 1 @pfx@_Tdrift @pfx@ Drift %.3lf
- 1 @pfx@_Part_Num @pfx@ PartNum
- 1 @pfx@_num_cc @pfx@ num_cc
- 1 @pfx@_Surf_Area @pfx@ Surface
- 1 @pfx@_Vol_Density @pfx@ Volume
- 1 @pfx@_P_mbar @pfx@ P
- 1 @pfx@_ccm @pfx@ Flow
- 1 @pfx@_Flow @pfx@ Raw_ccs
- 1 @pfx@_AirTemp @pfx@ T
- 1 @pfx@_Bin[16] @pfx@ Bins
+ 1 @pfx@_Tdrift POPS Drift %.3lf
+ 1 @pfx@_Part_Num POPS PartNum
+ 1 @pfx@_num_cc POPS num_cc
+ 1 @pfx@_Surf_Area POPS Surface
+ 1 @pfx@_Vol_Density POPS Volume
+ 1 @pfx@_P_mbar POPS P
+ 1 @pfx@_ccm POPS Flow
+ 1 @pfx@_Flow POPS Raw_ccs
+ 1 @pfx@_AirTemp POPS T
+ 1 @pfx@_Bin[16] POPS @pfx@_Bins
 
- 1 @pfx@_STD @pfx@_HK STD
- 1 @pfx@_LDTemp @pfx@_HK LDTemp
- 1 @pfx@_LD_Mon @pfx@_HK LDMon
- 1 @pfx@_Baseline @pfx@_HK Baseline
- 1 @pfx@_Srvr  @pfx@_HK Srvr %.0lf
- 1 @pfx@_Stale @pfx@_HK Stale
- 1 @pfx@_DrvStale @pfx@_HK Stale
+ 1 @pfx@_STD POPS_HK STD
+ 1 @pfx@_LDTemp POPS_HK Temp
+ 1 @pfx@_LD_Mon POPS_HK Temp
+ 1 @pfx@_Baseline POPS_HK Baseline
+ 1 @pfx@_Srvr  POPS_HK Srvr %.0lf
+ 1 @pfx@_Stale POPS_HK Stale
+ 1 @pfx@_DrvStale POPS_HK Stale
