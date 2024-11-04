@@ -399,11 +399,13 @@ bool POPS_client::forward(const uint8_t *cmd) {
 bool POPS_client::protocol_timeout() {
   TO.Clear();
   POPS.Srvr = 0;
-  msg(MSG_ERROR, "%s: POPS.Srvr = %d (resetting)", iname, POPS.Srvr);
+  msg(MSG_ERROR, "%s: Timeout (resetting)", iname);
   return reset();
 }
 
 bool POPS_client::app_process_eof() {
+  msg(MSG_ERROR, "%s: Lost contact with POPS, retrying", iname);
+  POPS.Srvr = 0;
   connect_later(5,0);
   return false;
 }
