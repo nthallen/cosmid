@@ -7,11 +7,11 @@
  1 @pfx@_ccm POPS Flow
  1 @pfx@_Flow POPS Raw_ccs
  1 @pfx@_AirTemp POPS T
+ 1 @pfx@_LDTemp POPS T
  1 @pfx@_Bin[16] POPS @pfx@_Bins
 
  1 @pfx@_STD POPS_HK STD
- 1 @pfx@_LDTemp POPS_HK Temp
- 1 @pfx@_LD_Mon POPS_HK Temp
+ 1 @pfx@_LD_Mon POPS_HK LD_Mon
  1 @pfx@_Baseline POPS_HK Baseline
  1 @pfx@_Srvr  POPS_HK Srvr %.0lf
  1 @pfx@_Stale POPS_HK Stale
