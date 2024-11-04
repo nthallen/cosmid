@@ -45,7 +45,7 @@ POPS_srvr.h
 
 make POPS_srvroui.cc
 
-dest=pops:SW/srvr
+dest=$tgthost:SW/srvr
 echo Creating directories
 ssh pops mkdir -p /root/SW/srvr/dasio
 echo Copying sources
