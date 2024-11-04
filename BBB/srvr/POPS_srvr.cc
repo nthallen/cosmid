@@ -43,9 +43,10 @@ bool pops_socket::protocol_input() {
           POPS_status = POPS_active;
           break;
         case 'E':
-          if (POPS_status == POPS_active && send_shutdown()) {
-            msg(0, "Shutdown forwarded to POPS");
+          if (POPS_status == POPS_active) {
+            msg(0, "Forwarding Shutdown to POPS");
             POPS_status = POPS_shutdown;
+            send_shutdown();
           } else {
             msg(0, "Issuing Shutdown");
             POPS_status = POPS_shutdown;
@@ -139,6 +140,12 @@ Shutdown_UDP::Shutdown_UDP(const char *service)
     : Socket("UDPw", "POPS", service, 0, UDP_WRITE)
 {}
 
+bool Shutdown_UDP::connected()
+{
+  msg(0, "%s: Connected", iname);
+  return false;
+}
+
 void Shutdown_UDP::send_shutdown()
 {
   iwrite("8");
@@ -150,15 +157,15 @@ const char *pops_service = "pops";
 
 int main(int argc, char **argv) {
   oui_init_options(argc, argv);
+  AppID.report_startup();
   Server server("pops");
   server.add_subservice(new SubService("pops",
       (socket_clone_t)new_pops_socket, (void*)0));
 
   Shutdown_UDP::SD = new Shutdown_UDP(pops_service);
   server.ELoop.add_child(Shutdown_UDP::SD);
-  Shutdown_UDP::SD->connect();
+  Shutdown_UDP::SD->connect_later(45);
   
-  AppID.report_startup();
   server.Start(Server::Srv_TCP);
   AppID.report_startup();
   return 0;

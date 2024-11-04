@@ -12,6 +12,8 @@ class Shutdown_UDP : public DAS_IO::Socket {
     Shutdown_UDP(const char *service);
     void send_shutdown();
     static Shutdown_UDP *SD;
+  protected:
+    bool connected() override;
 };
 
 class pops_socket : public DAS_IO::Serverside_client {
