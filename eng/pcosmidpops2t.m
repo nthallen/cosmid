@@ -1,4 +1,4 @@
-function pcosmidpops2t(varargin);
+function pcosmidpops2t(varargin)
 % pcosmidpops2t( [...] );
 % POPS2 T
 h = timeplot({'POPS2_AirTemp'}, ...

@@ -1,4 +1,4 @@
-function pcosmidpopsv(varargin);
+function pcosmidpopsv(varargin)
 % pcosmidpopsv( [...] );
 % POPS Volume
 h = timeplot({'POPS_Vol_Density'}, ...

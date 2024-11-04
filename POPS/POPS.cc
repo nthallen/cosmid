@@ -399,7 +399,7 @@ bool POPS_client::forward(const uint8_t *cmd) {
 bool POPS_client::protocol_timeout() {
   TO.Clear();
   POPS.Srvr = 0;
-  msg(MSG_DBG(0), "%s: POPS.Srvr = %d (resetting)", iname, POPS.Srvr);
+  msg(MSG_ERROR, "%s: POPS.Srvr = %d (resetting)", iname, POPS.Srvr);
   return reset();
 }
 

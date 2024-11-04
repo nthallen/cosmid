@@ -1,4 +1,4 @@
-function pcosmidpops2s(varargin);
+function pcosmidpops2s(varargin)
 % pcosmidpops2s( [...] );
 % POPS2 Surface
 h = timeplot({'POPS2_Surf_Area'}, ...

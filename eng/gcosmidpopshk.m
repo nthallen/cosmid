@@ -1,4 +1,4 @@
-function fig = gcosmidpopshk(varargin);
+function fig = gcosmidpopshk(varargin)
 % gcosmidpopshk(...)
 % POPS HK
 ffig = ne_group(varargin,'POPS HK','pcosmidpopshkstd','pcosmidpopshkldt','pcosmidpopshkldm','pcosmidpopshkb','pcosmidpopshks','pcosmidpopshkstale');

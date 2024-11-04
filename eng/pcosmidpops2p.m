@@ -1,4 +1,4 @@
-function pcosmidpops2p(varargin);
+function pcosmidpops2p(varargin)
 % pcosmidpops2p( [...] );
 % POPS2 P
 h = timeplot({'POPS2_P_mbar'}, ...

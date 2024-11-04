@@ -1,4 +1,4 @@
-function pcosmidpops2r(varargin);
+function pcosmidpops2r(varargin)
 % pcosmidpops2r( [...] );
 % POPS2 Raw ccs
 h = timeplot({'POPS2_Flow'}, ...

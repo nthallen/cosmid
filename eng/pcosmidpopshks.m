@@ -1,4 +1,4 @@
-function pcosmidpopshks(varargin);
+function pcosmidpopshks(varargin)
 % pcosmidpopshks( [...] );
 % POPS HK Srvr
 h = timeplot({'POPS_Srvr'}, ...

@@ -1,4 +1,4 @@
-function pcosmidtmcpu(varargin);
+function pcosmidtmcpu(varargin)
 % pcosmidtmcpu( [...] );
 % T Mbase CPU
 h = timeplot({'CPU_Pct'}, ...

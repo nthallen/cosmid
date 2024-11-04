@@ -1,4 +1,4 @@
-function pcosmidpopsnum_cc(varargin);
+function pcosmidpopsnum_cc(varargin)
 % pcosmidpopsnum_cc( [...] );
 % POPS num cc
 h = timeplot({'POPS_num_cc'}, ...

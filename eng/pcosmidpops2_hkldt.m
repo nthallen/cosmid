@@ -1,4 +1,4 @@
-function pcosmidpops2_hkldt(varargin);
+function pcosmidpops2_hkldt(varargin)
 % pcosmidpops2_hkldt( [...] );
 % POPS2 HK LD Temp
 h = timeplot({'POPS2_LDTemp'}, ...

@@ -1,4 +1,4 @@
-function pcosmidpops2d(varargin);
+function pcosmidpops2d(varargin)
 % pcosmidpops2d( [...] );
 % POPS2 Drift
 h = timeplot({'POPS2_Tdrift'}, ...

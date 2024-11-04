@@ -1,4 +1,4 @@
-function pcosmidtmd(varargin);
+function pcosmidtmd(varargin)
 % pcosmidtmd( [...] );
 % T Mbase Disk
 h = timeplot({'Disk'}, ...

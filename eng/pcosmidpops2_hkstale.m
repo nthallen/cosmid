@@ -1,4 +1,4 @@
-function pcosmidpops2_hkstale(varargin);
+function pcosmidpops2_hkstale(varargin)
 % pcosmidpops2_hkstale( [...] );
 % POPS2 HK Stale
 h = timeplot({'POPS2_Stale','POPS2_DrvStale'}, ...
