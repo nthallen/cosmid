@@ -1,4 +1,4 @@
-display cosmiddisp -n disp
+display cosmiddisp
 client cosmidclt
 extraction cosmidjsonext -n json
 
