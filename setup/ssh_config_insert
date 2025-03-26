@@ -12,4 +12,4 @@ include /etc/monarch/cosmid/ssh_config
 #   hostname cosmid1
 #   user my_username
 
-### End citco2 ssh_config_insert ###
+### End cosmid ssh_config_insert ###

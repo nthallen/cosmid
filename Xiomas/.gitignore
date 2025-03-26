@@ -1,0 +1,4 @@
+*.exe
+*.o
+xiomas_export
+xiomas_exportoui.cc
