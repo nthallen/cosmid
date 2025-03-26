@@ -76,7 +76,7 @@ typedef int HANDLE;
 #define vsiprintf vsprintf
 #endif
 
-#include "XiomasTypes.h"
+// #include "XiomasTypes.h"
 
 //------------------------------------------
 // set endian macros
@@ -186,7 +186,7 @@ EXTERN_C void ATTR_NORETURN linuxAssertFail(const char *pszAssertion, const char
 //---------------------------------------------------------------------
 // NOP method -- add processor as defined
 //---------------------------------------------------------------------
-#if defined(__X86__) || defined(__X64__) || defined(__X86__)
+#if defined(__X86__) || defined(__X64__) || defined(__X86__) || defined(__amd64__)
 #define nop()	asm volatile("nop")
 #elif defined(__ARM__)
 #define nop()	asm volatile("nop");
