@@ -29,6 +29,7 @@ class xiomas_tcp_rcvr : public Socket
     xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
         xiomas_export *exp);
   protected:
+    bool connected() override;
     bool protocol_input() override;
     static const int RCVR_BUFSIZE = 50000;
 };

@@ -17,12 +17,20 @@ xiomas_tcp_rcvr::xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
   // Should at least try to validate the remote IP address
 }
 
+bool xiomas_tcp_rcvr::connected()
+{
+  msg(MSG, "%s: Connection established from Xiomas", iname);
+  return false;
+}
+
 bool xiomas_tcp_rcvr::protocol_input()
 {
+  msg(MSG, "%s: Incoming TCP packet len %d", iname, nc);
   // Validate incoming packet
   // Packetize into serio_pkts
   // Log packet with a timestamp packet
   // Forward packet to tm_ip_export
+  report_ok(nc);
   return false;
 }
 
@@ -58,6 +66,8 @@ xiomas_udp_rcvr::xiomas_udp_rcvr(const char *iname, xiomas_export *exp,
 
 bool xiomas_udp_rcvr::protocol_input()
 {
+  msg(MSG, "%s: Incoming UDP packet len %d", iname, nc);
+  report_ok(nc);
   return false;
 }
 
