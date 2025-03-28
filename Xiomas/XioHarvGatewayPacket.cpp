@@ -29,12 +29,16 @@
 
 //:Custom
 //
+#include "nl.h"
 
 #if 1	// enable debug output
 #define DEBUG(fmt, ...)	printf(fmt, ##__VA_ARGS__)
 #else
 #define DEBUG(...)
 #endif
+
+#define printf(fmt, ...) msg(MSG_DEBUG, fmt, ##__VA_ARGS__)
+
 //:End Custom
 
 //:>                  +-----------------------------------+
