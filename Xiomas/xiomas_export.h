@@ -3,7 +3,7 @@
 #include "dasio/loop.h"
 #include "dasio/socket.h"
 #include "dasio/client.h"
-#include "mlf.h"
+#include "mlf_packet_logger.h"
 #include "XioHarvGatewayPacket.h"
 
 using namespace DAS_IO;
@@ -32,26 +32,13 @@ class xiomas_udp_export : public Client
 {
   public:
     xiomas_udp_export(const char *iname);
+    ~xiomas_udp_export();
     void forward_packet(const unsigned char *bfr, int n_bytes);
     bool app_input() override;
     static const int RCVR_BUFSIZE = 50;
   protected:
     bool ack_pending;
     int packets_dropped;
-};
-
-class mlf_packet_logger {
-  public:
-    mlf_packet_logger(const char *iname,
-      const char *mlf_base, const char *mlf_config);
-    void log_packet(const unsigned char *bfr, uint16_t pkt_len);
-    void next_file();
-  protected:
-    const char *miname;
-    mlf_def_t *mlf;
-    int ofd;
-    int Bytes_in_File;
-    const static int Bytes_per_File = 40960;
 };
 
 /**
@@ -107,7 +94,7 @@ class xiomas_udp_txmtr : public Socket
  * Receive control messages from external instrument.
  * Replies go out on xutr.
  */
-class xiomas_udp_rcvr : public Socket
+class xiomas_udp_rcvr : public Socket, mlf_packet_logger
 {
   public:
     xiomas_udp_rcvr(const char *iname, xiomas_udp_export *exp,
@@ -127,19 +114,12 @@ class xiomas_udp_rcvr : public Socket
     bool sendFlag(uint8_t flag);
     inline bool sendCTS() { return sendFlag(xhfCTS); }
     inline bool sendNCTS() { return sendFlag(xhfNCTS); }
-    void log_packet(const unsigned char *bfr, uint16_t pkt_len);
-    void next_file();
     xiomas_udp_export *exp;
     xiomas_udp_txmtr *xutr;
     uint32_t block_count;
     uint8_t pkts_recd;
     bool connect_requested;
-    mlf_def_t *mlf;
-    int ofd;
-    int Bytes_in_File;
     static const int RCVR_BUFSIZE = 5000; // check this
-    static const int Bytes_per_File = 40960;
-
 };
 
 #endif

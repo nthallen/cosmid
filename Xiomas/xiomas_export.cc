@@ -1,8 +1,7 @@
-#include <errno.h>
-#include <unistd.h>
 #include "xiomas_export.h"
 #include "dasio/appid.h"
 #include "dasio/serio_pkt.h"
+#include "dasio/quit.h"
 #include "crc16modbus.h"
 #include "XioHarvGatewayPacket.h"
 #include "nl.h"
@@ -12,17 +11,23 @@
 using namespace DAS_IO;
 
 xiomas_tcp_export::xiomas_tcp_export(const char *iname)
-  : Client("xexp", RCVR_BUFSIZE, 0, "ip_ex", "tcp")
+  : Client("xtx", RCVR_BUFSIZE, 0, "ip_ex", "tcp")
 {
   set_obufsize(5*1024);
 }
 
 xiomas_udp_export::xiomas_udp_export(const char *iname)
-  : Client("xexp", RCVR_BUFSIZE, 0, "ip_ex", "udp"),
+  : Client("xux", RCVR_BUFSIZE, 0, "ip_ex", "udp"),
     ack_pending(false),
     packets_dropped(0)
 {
   set_obufsize(5*1024);
+}
+
+xiomas_udp_export::~xiomas_udp_export()
+{
+  if (packets_dropped)
+    msg(MSG, "%s: %d packets dropped", iname, packets_dropped);
 }
 
 bool xiomas_udp_export::app_input()
@@ -69,47 +74,6 @@ void xiomas_udp_export::forward_packet(const unsigned char *bfr, int n_bytes)
     hdr.LRC = -hdr.LRC;
   }
   iwritev(io,2);
-}
-
-mlf_packet_logger::mlf_packet_logger(const char *iname,
-      const char *mlf_base, const char *mlf_config)
-  : miname(iname)
-{
-  mlf = mlf_init(3, 60, 1, mlf_base, "dat", mlf_config);
-}
-
-void mlf_packet_logger::log_packet(const unsigned char *bfr, uint16_t pkt_len)
-{
-  if (ofd < 0 || 
-      ((ofd >= 0) && Bytes_in_File + (int)pkt_len > Bytes_per_File))
-    next_file();
-  nl_assert(ofd >= 0);
-  int rv = write(ofd, bfr, pkt_len);
-  if (rv < 0)
-    msg(MSG_ERROR, "%s: error %d writing to file: strerror(errno)",
-      miname, errno, strerror(errno));
-  else if (rv < pkt_len)
-    msg(MSG_ERROR, "%s: short write to file: %d/%d", miname, rv, pkt_len);
-  else
-  {
-    Bytes_in_File += pkt_len;
-    return;
-  }
-  // Try moving on to another file:
-  ::close(ofd);
-  ofd = -1;
-}
-
-void mlf_packet_logger::next_file()
-{
-  if ((ofd >= 0) && ::close(ofd)) {
-    msg(MSG_ERROR, "%s: Error closing file: %s", miname, strerror(errno));
-  }
-  ofd = mlf_next_fd(mlf);
-  if (ofd < 0)
-    msg(MSG_FATAL, "%s: Unable to open output file", miname);
-  Bytes_in_File = 0;
-  // write_tstamp();
 }
 
 const char *xiomas_tcp_rcvr::mlf_base = "XioTCP";
@@ -204,14 +168,12 @@ const char *xiomas_udp_rcvr::mlf_config;
 xiomas_udp_rcvr::xiomas_udp_rcvr(const char *iname, xiomas_udp_export *exp,
         xiomas_udp_txmtr *xutr)
     : Socket(iname, "xurx", "xurx", RCVR_BUFSIZE, UDP_READ),
+      mlf_packet_logger(iname, mlf_base, mlf_config),
       exp(exp),
       xutr(xutr),
       block_count(0),
       pkts_recd(0),
-      connect_requested(false),
-      mlf(0),
-      ofd(-1),
-      Bytes_in_File(0)
+      connect_requested(false)
 {
   mlf = mlf_init(3, 60, 1, mlf_base, "dat", mlf_config);
   // Validate incoming packet
@@ -303,44 +265,6 @@ bool xiomas_udp_rcvr::sendFlag(uint8_t flag)
   return xutr->send((char *)&hdr, sizeof(hdr));
 }
 
-void xiomas_udp_rcvr::log_packet(const unsigned char *bfr, uint16_t pkt_len)
-{
-  if (ofd < 0 || 
-      ((ofd >= 0) && Bytes_in_File + (int)nc > Bytes_per_File))
-    next_file();
-  nl_assert(ofd >= 0);
-  int rv = write(ofd, bfr, pkt_len);
-  if (rv < 0)
-    msg(MSG_ERROR, "%s: error %d writing to file: strerror(errno)",
-      iname, errno, strerror(errno));
-  else if (rv < pkt_len)
-    msg(MSG_ERROR, "%s: short write to file: %d/%d", iname, rv, pkt_len);
-  else
-  {
-    Bytes_in_File += pkt_len;
-    return;
-  }
-  // Try moving on to another file:
-  ::close(ofd);
-  ofd = -1;
-}
-
-/**
- * Assumes Tstamp has been updated appropriately, which is
- * done in archive().
- */
-void xiomas_udp_rcvr::next_file()
-{
-  if ((ofd >= 0) && ::close(ofd)) {
-    msg(MSG_ERROR, "Error closing file: %s", strerror(errno));
-  }
-  ofd = mlf_next_fd(mlf);
-  if (ofd < 0)
-    msg(MSG_FATAL, "Unable to open output file");
-  Bytes_in_File = 0;
-  // write_tstamp();
-}
-
 int main(int argc, char **argv)
 {
   oui_init_options(argc, argv);
@@ -350,11 +274,11 @@ int main(int argc, char **argv)
     AppID.report_startup();
     
     xiomas_tcp_export *XTEXP = new xiomas_tcp_export("XTEXP");
-    // XTEXP->connect();
+    XTEXP->connect();
     ELoop.add_child(XTEXP);
     
     xiomas_udp_export *XUEXP = new xiomas_udp_export("XUEXP");
-    // XUEXP->connect();
+    XUEXP->connect();
     ELoop.add_child(XUEXP);
 
     /* TCP listener on xiomas service: xiomas_tcp_svc */
@@ -363,13 +287,17 @@ int main(int argc, char **argv)
     ELoop.add_child(XTCP);
     
     xiomas_udp_txmtr *XUTX = new xiomas_udp_txmtr("XUTX");
-    // XUTX->connect();
+    XUTX->connect();
     ELoop.add_child(XUTX);
 
     /* UDP RW on xiomas service */
     xiomas_udp_rcvr *XURX = new xiomas_udp_rcvr("XURX", XUEXP, XUTX);
     XURX->connect();
     ELoop.add_child(XURX);
+    
+    Quit *Q = new Quit();
+    Q->connect();
+    ELoop.add_child(Q);
     
     /* Data forward to tm_ip_export */
     /* Quit service from srvr */
