@@ -1,4 +1,4 @@
-ModuleDef POPS [ pfx=POPS tbl_name= ] {
+ModuleDef POPS [ pfx=POPS tbl_name= TX=^ ] {
 }
 
 mode (default, server) {

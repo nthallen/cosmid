@@ -1,0 +1,5 @@
+display @Prefix@disp -n disp
+client [SI|RT] @Prefix@clt
+extraction @Prefix@jsonext -n json
+memo
+batchfile runfile.sat

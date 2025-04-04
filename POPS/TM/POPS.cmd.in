@@ -1,6 +1,6 @@
 %INTERFACE <@pfx@>
 
-&command
+&@TX@command
   : @pfx@ Start * { if_@pfx@.Turf("B\n"); }
 # : @pfx@ Shutdown * { if_@pfx@.Turf("S\n"); }
   : @pfx@ Shutdown * { if_@pfx@.Turf("E\n"); }
