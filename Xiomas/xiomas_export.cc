@@ -11,13 +11,13 @@
 using namespace DAS_IO;
 
 xiomas_tcp_export::xiomas_tcp_export(const char *iname)
-  : Client("xtx", RCVR_BUFSIZE, 0, "ip_ex", "tcp")
+  : Client("xtx", RCVR_BUFSIZE, 0, "ipx", "tcp")
 {
   set_obufsize(5*1024);
 }
 
 xiomas_udp_export::xiomas_udp_export(const char *iname)
-  : Client("xux", RCVR_BUFSIZE, 0, "ip_ex", "udp"),
+  : Client("xux", RCVR_BUFSIZE, 0, "ipx", "udp"),
     ack_pending(false),
     packets_dropped(0)
 {
@@ -286,11 +286,12 @@ int main(int argc, char **argv)
     XTCP->connect();
     ELoop.add_child(XTCP);
     
+    /* UDP write on xiomas service */
     xiomas_udp_txmtr *XUTX = new xiomas_udp_txmtr("XUTX");
     XUTX->connect();
     ELoop.add_child(XUTX);
 
-    /* UDP RW on xiomas service */
+    /* UDP read on xiomas service */
     xiomas_udp_rcvr *XURX = new xiomas_udp_rcvr("XURX", XUEXP, XUTX);
     XURX->connect();
     ELoop.add_child(XURX);

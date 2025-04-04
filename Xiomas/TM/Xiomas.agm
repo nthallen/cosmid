@@ -1,0 +1,11 @@
+Moduledef Xiomas {
+}
+
+DISTRIB = @MODDIR@/../xiomas_export
+%%
+.PHONY : clean-xiomas @MODDIR@/../xiomas_export
+@MODDIR@/../xiomas_export :
+	$(MAKE) --directory=@MODDIR@/.. xiomas_export
+clean-dist : clean-xiomas
+clean-xiomas :
+	$(MAKE) --directory=@MODDIR@/.. clean

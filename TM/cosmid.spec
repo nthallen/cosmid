@@ -5,6 +5,8 @@ Module TMbase mode=ignore
 Module POPS mode=server
 Module POPS pfx=POPS2
 Module coretemps_select
+Module tm_ipx
+Module Xiomas
 
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config

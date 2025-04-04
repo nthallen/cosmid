@@ -2,6 +2,8 @@
 <include> msg oui
 <include> host_session
 
+<unsort>
+Host_Session function xutx: Where to send service xutx UDP command and control
 
 <package> appid_default
 <include> "dasio/appid.h"
