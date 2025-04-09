@@ -1,0 +1,11 @@
+<package> nephex_export
+<include> msg oui
+<include> host_session
+
+<unsort>
+Host_Session function Nephex: Nephex data source
+
+<package> appid_default
+<include> "dasio/appid.h"
+<defs>
+  DAS_IO::AppID_t DAS_IO::AppID("NExp", "nephex_export", "V1.0");
