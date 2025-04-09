@@ -68,8 +68,8 @@ enum EXHPacketIDs
 
 	// 128-255 large stream messages sent using TCP
 	xhpidFireLayer	= 0x81,	// fire layer imagery frame
-	xipidMWBand		= 0x82,	// MW IR band imagery frame
-	xipidLWBand		= 0x83,	// LW IR band imagery frame
+	xhpidMWBand		= 0x82,	// MW IR band imagery frame
+	xhpidLWBand		= 0x83,	// LW IR band imagery frame
 	// 0x84 - 0xff reserved
 	xhpidStreamLimit		// Limit of valid stream packet ID values
 };

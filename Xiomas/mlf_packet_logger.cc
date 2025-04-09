@@ -15,24 +15,34 @@ mlf_packet_logger::mlf_packet_logger(const char *iname,
   mlf = mlf_init(3, 60, 1, mlf_base, "dat", mlf_config);
 }
 
-void mlf_packet_logger::log_packet(const unsigned char *bfr, uint16_t pkt_len)
+mlf_packet_logger::~mlf_packet_logger()
 {
-  if (ofd < 0 || 
-      ((ofd >= 0) && Bytes_in_File + (int)pkt_len > Bytes_per_File))
+  if (ofd >= 0) {
+    ::close(ofd);
+    ofd = -1;
+  }
+}
+
+void mlf_packet_logger::log_packet(const uint8_t *bfr, uint32_t pkt_len,
+          log_mode mode)
+{
+  if (ofd < 0 || (mode == log_newfile) ||
+      ((ofd >= 0) && (mode != log_newfile) &&
+        Bytes_in_File + (int)pkt_len > Bytes_per_File))
     next_file();
   nl_assert(ofd >= 0);
   int rv = write(ofd, bfr, pkt_len);
   if (rv < 0)
     msg(MSG_ERROR, "%s: error %d writing to file: strerror(errno)",
       miname, errno, strerror(errno));
-  else if (rv < pkt_len)
+  else if (rv < (int)pkt_len)
     msg(MSG_ERROR, "%s: short write to file: %d/%d", miname, rv, pkt_len);
   else
   {
     Bytes_in_File += pkt_len;
     return;
   }
-  // Try moving on to another file:
+  // Try moving on to another file on error:
   ::close(ofd);
   ofd = -1;
 }

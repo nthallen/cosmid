@@ -10,11 +10,45 @@
 
 using namespace DAS_IO;
 
+/****** xiomas_tcp_export ******/
+
 xiomas_tcp_export::xiomas_tcp_export(const char *iname)
-  : Client("xtx", RCVR_BUFSIZE, 0, "ipx", "tcp")
+  : Client("xtx", RCVR_BUFSIZE, 0, "ipx", "tcp"),
+    circ((uint8_t*)new_memory(CIRC_BUFFER_SIZE)),
+    circ_size(CIRC_BUFFER_SIZE),
+    circ_head(-1),
+    circ_tail(0)
 {
-  set_obufsize(5*1024);
 }
+
+void xiomas_tcp_export::forward_packet(const uint8_t *bfr, int n_bytes)
+{
+}
+
+bool xiomas_tcp_export::app_input()
+{
+  return false;
+}
+
+/**
+ * @returns number of bytes of data that can be added to the buffer
+ */
+uint32_t xiomas_tcp_export::circ_space()
+{
+  return circ_size - circ_length();
+}
+
+/**
+ * @returns number of bytes of data currently in the buffer
+ */
+uint32_t xiomas_tcp_export::circ_length()
+{
+  return circ_head < 0 ? 0 :
+    (circ_tail > circ_head ? circ_tail-circ_head :
+     circ_size-circ_head+circ_tail);
+}
+
+/****** xiomas_udp_export ******/
 
 xiomas_udp_export::xiomas_udp_export(const char *iname)
   : Client("xux", RCVR_BUFSIZE, 0, "ipx", "udp"),
@@ -76,6 +110,9 @@ void xiomas_udp_export::forward_packet(const unsigned char *bfr, int n_bytes)
   iwritev(io,2);
 }
 
+
+/****** xiomas_tcp_rcvr ******/
+
 const char *xiomas_tcp_rcvr::mlf_base = "XioTCP";
 const char *xiomas_tcp_rcvr::mlf_config;
 
@@ -83,10 +120,13 @@ xiomas_tcp_rcvr::xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
         xiomas_tcp_export *exp)
     : Socket(orig, iname, RCVR_BUFSIZE, fd),
       mlf_packet_logger(iname, mlf_base, mlf_config),
+      state(xtr_lost),
+      bytes_remaining_in_packet(0),
+      bytes_discarding(0),
       block_count(0),
       exp(exp)
 {
-  set_obufsize(5*1024);
+  // set_obufsize(5*1024); // I don't think I need an obuf here
   // Should at least try to validate the remote IP address
 }
 
@@ -98,12 +138,117 @@ bool xiomas_tcp_rcvr::connected()
 
 bool xiomas_tcp_rcvr::protocol_input()
 {
-  msg(MSG, "%s: Incoming TCP packet len %d", iname, nc);
-  // Validate incoming packet
-  // Packetize into serio_pkts
-  // Log packet with a timestamp packet
-  // Forward packet to tm_ip_export
-  report_ok(nc);
+  unsigned cp0, nc0;
+  uint32_t txmit_size;
+  XioHarvardHeader *hdr;
+
+  while (cp < nc)
+  {
+    switch (state)
+    {
+      case xtr_lost:
+        cp0 = cp;
+        nc0 = nc;
+        if (not_found('$', true))
+        {
+          bytes_discarding += nc0-cp0;
+        } else {
+          --cp;
+          bytes_discarding += cp-cp0;
+          state = xtr_idle;
+        }
+        continue;
+      case xtr_idle:
+        // msg(MSG_DBG(0), "%s: Incoming packet len %d", iname, nc-cp);
+        // Validate incoming packet
+        // Packetize into serio_pkts
+        // Log packet with a timestamp packet
+        // Forward packet to tm_ip_export
+        if (nc-cp < sizeof(XioHarvardHeader))
+        {
+          consume(cp);
+          return false;
+        }
+        hdr = (XioHarvardHeader*)&buf[cp];
+        // xhgValidateHeader will check that the header matches the
+        // length given here (nc), but in a streaming input, there
+        // could be more or less data in the input buffer, so we
+        // should use the header's length.
+        bytes_remaining_in_packet = xhgGetPacketLength(hdr);
+        if (!xhgValidateHeader(hdr, bytes_remaining_in_packet))
+        {
+          // report_err("%s: Bad packet, searching", iname);
+          ++cp;
+          state = xtr_lost;
+          continue;
+        }
+        if (bytes_remaining_in_packet > MAX_SPKT_LENGTH+1000)
+        {
+          xhgShowHeader(hdr);
+          report_err("%s: Oversized packet, assuming bad", iname);
+          ++cp;
+          state = xtr_lost;
+          continue;
+        }
+        if (bytes_discarding)
+        {
+          report_err("%s: Discarded %u bytes before valid packet",
+                  iname, bytes_discarding);
+          bytes_discarding = 0;
+        }
+        if (hdr->m_uSource != xhsrcScanner)
+        {
+          report_err("%s: Unexpected packet source %d", iname, hdr->m_uSource);
+        }
+
+        if ((hdr->m_uFlags & xhfRTS) && CTS())
+        {
+          sendCTS();
+        }
+
+        // setup the packet
+        state = xtr_mid_pkt;
+        switch (hdr->m_uPacketID)
+        {
+          case xhpidFireLayer:	// fire layer imagery frame
+          case xhpidMWBand:     // MW IR band imagery frame
+          case xhpidLWBand:     // LW IR band imagery frame
+            break;
+          default:
+            msg(MSG_WARN, "%s: Unexpected packet ID %d", iname, hdr->m_uPacketID);
+        }
+        // Figure out the total size after packetization
+        {
+          uint32_t n_pkts =
+            (bytes_remaining_in_packet+MAX_SPKT_DATA_PER_SERIO_PKT-1) /
+              MAX_SPKT_DATA_PER_SERIO_PKT;
+          uint32_t total_pkts_size =
+            bytes_remaining_in_packet + n_pkts * sizeof(serio_pkt_hdr);
+          transmitting_current_packet = total_pkts_size <= exp->circ_space();
+        }
+
+        txmit_size =
+          nc-cp < bytes_remaining_in_packet ?
+            nc-cp : bytes_remaining_in_packet;
+
+        log_packet(buf+cp, txmit_size,
+          xhgGetPacketLength(hdr) > 2000 ? log_newfile : log_default);
+        break;
+      case xtr_mid_pkt:
+        txmit_size =
+          nc-cp < bytes_remaining_in_packet ?
+            nc-cp : bytes_remaining_in_packet;
+        log_packet(buf+cp, txmit_size, log_curfile);
+        break;
+    }
+    // We should only reach here if we have set txmit_size
+    if (transmitting_current_packet)
+      exp->forward_packet(buf+cp, txmit_size);
+    cp += txmit_size;
+    bytes_remaining_in_packet -= txmit_size;
+  }
+
+  report_ok(cp);
   return false;
 }
 
@@ -126,6 +271,8 @@ bool xiomas_tcp_rcvr::sendFlag(uint8_t flag)
   return iwrite((char *)&hdr, sizeof(hdr));
 }
 
+/****** xiomas_tcp_svc ******/
+
 xiomas_tcp_svc::xiomas_tcp_svc(const char *iname, xiomas_tcp_export *exp)
     : Socket(iname, "xtcp", Socket_TCP),
       exp(exp)
@@ -138,6 +285,8 @@ Socket *xiomas_tcp_svc::new_client(const char *iname, int fd)
   if (ELoop) ELoop->add_child(rv);
   return rv;
 }
+
+/****** xiomas_udp_txmtr ******/
 
 xiomas_udp_txmtr::xiomas_udp_txmtr(const char *iname)
     : Socket(iname, "xutx", "xutx", RCVR_BUFSIZE, UDP_WRITE)
@@ -161,6 +310,8 @@ bool xiomas_udp_txmtr::send(const char *p, unsigned nc)
 {
   return CTS() && iwrite(p, nc);
 }
+
+/****** xiomas_udp_rcvr ******/
 
 const char *xiomas_udp_rcvr::mlf_base = "XioUDP";
 const char *xiomas_udp_rcvr::mlf_config;
@@ -264,6 +415,8 @@ bool xiomas_udp_rcvr::sendFlag(uint8_t flag)
   xhgShowHeader(&hdr);
   return xutr->send((char *)&hdr, sizeof(hdr));
 }
+
+/****** main() ******/
 
 int main(int argc, char **argv)
 {

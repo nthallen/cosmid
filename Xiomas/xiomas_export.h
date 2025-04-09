@@ -8,6 +8,10 @@
 
 using namespace DAS_IO;
 
+
+#define MAX_SPKT_LENGTH 213183
+#define MAX_SPKT_DATA_PER_SERIO_PKT 946
+
 /**
  * One-way dump of serio_pkt data to tm_ip_export for
  * incorporation into satellite or radio transmission
@@ -17,7 +21,31 @@ class xiomas_tcp_export : public Client
 {
   public:
     xiomas_tcp_export(const char *iname);
+    void forward_packet(const uint8_t *bfr, int n_bytes);
     static const int RCVR_BUFSIZE = 50;
+    /**
+     * @returns number of bytes of data that can be added to the buffer
+     */
+    uint32_t circ_space();
+  protected:
+    /**
+     * Receives acknowledges from tm_ip_export indicating how many
+     * bytes have been processed.
+     * ACK \d+\n
+     * May also receive command packets
+     */
+    bool app_input() override;
+    
+    /**
+     * @returns number of bytes of data currently in the buffer
+     */
+    uint32_t circ_length();
+    /**
+     * Circular buffer
+     */
+    const uint8_t *circ;
+    uint32_t circ_size, circ_head, circ_tail;
+    static const int CIRC_BUFFER_SIZE = 270000;
 };
 
 /**
@@ -51,6 +79,7 @@ class xiomas_tcp_rcvr : public Socket, mlf_packet_logger
   public:
     xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
         xiomas_tcp_export *exp);
+    inline bool CTS() { return obuf_empty(); }
     static const char *mlf_base;
     static const char *mlf_config;
   protected:
@@ -59,6 +88,10 @@ class xiomas_tcp_rcvr : public Socket, mlf_packet_logger
     bool sendFlag(uint8_t flag);
     inline bool sendCTS() { return sendFlag(xhfCTS); }
     inline bool sendNCTS() { return sendFlag(xhfNCTS); }
+    bool transmitting_current_packet;
+    enum state_t { xtr_idle, xtr_mid_pkt, xtr_lost } state;
+    uint32_t bytes_remaining_in_packet;
+    uint32_t bytes_discarding;
     uint32_t block_count;
     xiomas_tcp_export *exp;
     static const int RCVR_BUFSIZE = 50000;
