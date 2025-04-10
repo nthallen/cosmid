@@ -17,17 +17,93 @@ xiomas_tcp_export::xiomas_tcp_export(const char *iname)
     circ((uint8_t*)new_memory(CIRC_BUFFER_SIZE)),
     circ_size(CIRC_BUFFER_SIZE),
     circ_head(-1),
-    circ_tail(0)
+    circ_tail(0),
+    outstanding_bytes(0)
 {
+  set_obufsize(2000);
 }
 
 void xiomas_tcp_export::forward_packet(const uint8_t *bfr, int n_bytes)
 {
+  serio_pkt_hdr hdr;
+  
+  hdr.LRC = 0;
+  hdr.type = pkt_type_SID;
+  hdr.length = n_bytes;
+  { unsigned CRC = crc16modbus_word(0,0,0);
+    CRC = crc16modbus_word(CRC, bfr, n_bytes);
+    hdr.CRC = CRC;
+    uint8_t *hdrp = (uint8_t *)&hdr;
+    for (uint32_t i = 1; i < sizeof(hdr); ++i) {
+      hdr.LRC += hdrp[i];
+    }
+    hdr.LRC = -hdr.LRC;
+  }
+  circ_commit(&hdr, sizeof(hdr));
+  circ_commit(bfr, n_bytes);
+  process_queue();
 }
 
 bool xiomas_tcp_export::app_input()
 {
+  bool have_hdr;
+  serio_pkt_type type;
+  uint16_t length;
+  uint8_t *payload;
+  serio_ctrl_payload *sctrl;
+
+  while (cp < nc)
+  {
+    if (not_serio_pkt(have_hdr, type, length, payload))
+      return false;
+    switch (type)
+    {
+      case pkt_type_CTRL:
+        if (length != sizeof(serio_ctrl_payload))
+        {
+          report_err("%s: Invalid ctrl packet payload length: %d",
+            iname, length);
+          ++cp;
+          continue;
+        }
+        sctrl = (serio_ctrl_payload*)payload;
+        switch (sctrl->subtype)
+        {
+          case ctrl_subtype_ACK:
+            if (sctrl->length > outstanding_bytes)
+            {
+              report_err("%s: ACK exceeds tx: %u", iname, sctrl->length);
+              outstanding_bytes = 0;
+            } else outstanding_bytes -= sctrl->length;
+            process_queue();
+            break;
+          default:
+            report_err("%s: Unsupported ctrl subtype %u", iname,
+              sctrl->subtype);
+            break;
+        }
+        report_ok(serio::pkt_hdr_size + length);
+        break;
+      default:
+        report_err("%s: Unsupported packet type %u", iname, type);
+    }
+  }
   return false;
+}
+
+void xiomas_tcp_export::process_queue()
+{
+  // I'd like to transmit a packet at a time, but
+  // I'm probably overthinking, since it's going
+  // down in a stream. They have to come in as
+  // complete packets, though.
+  uint32_t len = circ_length();
+  if (CTS() && len > 0)
+  {
+    if (len > MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr))
+      len = MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr);
+    circ_transmit(len);
+  }
 }
 
 /**
@@ -46,6 +122,56 @@ uint32_t xiomas_tcp_export::circ_length()
   return circ_head < 0 ? 0 :
     (circ_tail > circ_head ? circ_tail-circ_head :
      circ_size-circ_head+circ_tail);
+}
+
+void xiomas_tcp_export::circ_commit(const void *data, uint32_t n_bytes)
+{
+  if (n_bytes > circ_space())
+  {
+    msg(MSG_ERROR, "%s: circular buffer overflow", iname);
+    n_bytes = circ_space();
+  }
+  if (n_bytes)
+  {
+    // We know we are not full
+    if (circ_head < 0) {
+      circ_head = 0;
+      circ_tail = 0;
+    }
+    uint32_t tail_space =
+      circ_tail >= circ_head ?
+        circ_size-circ_tail :
+        circ_head-circ_tail;
+    if (n_bytes < tail_space)
+      tail_space = n_bytes;
+    memcpy(&circ[circ_tail], data, tail_space);
+    circ_tail += tail_space;
+    nl_assert(circ_tail <= circ_size);
+    if (circ_tail == circ_size)
+      circ_tail = 0;
+    n_bytes -= tail_space;
+    data = tail_space + (uint8_t*)data; // don't to arithmetic on void*
+    if (n_bytes)
+    {
+      nl_assert(circ_tail == 0 && n_bytes <= circ_head);
+      memcpy(&circ[circ_tail], data, n_bytes);
+      circ_tail += tail_space;
+    }
+  }
+}
+
+void xiomas_tcp_export::circ_transmit(uint32_t n_bytes)
+{
+  while (n_bytes)
+  {
+    uint32_t txmit_bytes = circ_head_bytes();
+    nl_assert(txmit_bytes > 0);
+    if (n_bytes < txmit_bytes)
+      txmit_bytes = n_bytes;
+    iwrite((char*)&circ[circ_head], txmit_bytes);
+    n_bytes -= txmit_bytes;
+    circ_consume(txmit_bytes);
+  }
 }
 
 /****** xiomas_udp_export ******/
@@ -136,6 +262,14 @@ bool xiomas_tcp_rcvr::connected()
   return false;
 }
 
+uint32_t xiomas_tcp_rcvr::get_txmit_size()
+{
+  uint32_t to_send =
+    (bytes_remaining_in_packet >= MAX_SPKT_DATA_PER_SERIO_PKT) ?
+    MAX_SPKT_DATA_PER_SERIO_PKT : bytes_remaining_in_packet;
+  return (nc-cp >= to_send) ? to_send : 0;
+}
+
 bool xiomas_tcp_rcvr::protocol_input()
 {
   unsigned cp0, nc0;
@@ -190,6 +324,11 @@ bool xiomas_tcp_rcvr::protocol_input()
           state = xtr_lost;
           continue;
         }
+        txmit_size = get_txmit_size();
+        if (!txmit_size)
+          return false; // Don't send short packets
+        
+        // Now we are committed to logging and/or transmitting something
         if (bytes_discarding)
         {
           report_err("%s: Discarded %u bytes before valid packet",
@@ -227,25 +366,23 @@ bool xiomas_tcp_rcvr::protocol_input()
           transmitting_current_packet = total_pkts_size <= exp->circ_space();
         }
 
-        txmit_size =
-          nc-cp < bytes_remaining_in_packet ?
-            nc-cp : bytes_remaining_in_packet;
-
         log_packet(buf+cp, txmit_size,
           xhgGetPacketLength(hdr) > 2000 ? log_newfile : log_default);
         break;
       case xtr_mid_pkt:
-        txmit_size =
-          nc-cp < bytes_remaining_in_packet ?
-            nc-cp : bytes_remaining_in_packet;
-        log_packet(buf+cp, txmit_size, log_curfile);
+        txmit_size = get_txmit_size();
+        if (txmit_size)
+          log_packet(buf+cp, txmit_size, log_curfile);
         break;
     }
     // We should only reach here if we have set txmit_size
-    if (transmitting_current_packet)
-      exp->forward_packet(buf+cp, txmit_size);
-    cp += txmit_size;
-    bytes_remaining_in_packet -= txmit_size;
+    if (txmit_size)
+    {
+      if (transmitting_current_packet)
+        exp->forward_packet(buf+cp, txmit_size);
+      cp += txmit_size;
+      bytes_remaining_in_packet -= txmit_size;
+    }
   }
 
   report_ok(cp);

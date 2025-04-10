@@ -1,0 +1,5 @@
+#! /bin/bash
+export TMBINDIR=/home/cosmid/src/Xiomas/test
+export Experiment=xiomas
+../xiomas_export -vV -o xiomas_export.log -H xutx:10.11.97.95
+

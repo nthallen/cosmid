@@ -1,0 +1,142 @@
+
+XExp Starting: Fri Mar 28 17:38:42 2025
+17:38:42.549 XExp: xiomas_export V1.0 Starting
+17:38:43.206 XExp: XUTX: Delayed connect
+17:38:43.218 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=a8 flags=40 plen=0 blk=3062
+17:38:43.218 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=c9 flags=20 plen=0 blk=1
+17:38:44.220 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=0c flags=00 plen=217 blk=3063
+17:38:45.221 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=f6 flags=00 plen=238 blk=3064
+17:38:46.222 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=f5 flags=00 plen=238 blk=3065
+17:38:47.223 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=d2 flags=00 plen=271 blk=3066
+17:38:48.224 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=c3 flags=00 plen=285 blk=3067
+17:38:49.226 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=d6 flags=00 plen=265 blk=3068
+17:38:50.227 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=f1 flags=00 plen=238 blk=3069
+17:38:51.228 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=f0 flags=00 plen=238 blk=3070
+17:38:52.229 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=ed flags=00 plen=240 blk=3071
+17:38:53.230 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=b5 flags=00 plen=293 blk=3072
+17:38:54.231 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=a4 flags=00 plen=309 blk=3073
+17:38:54.231 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=d8 flags=10 plen=0 blk=2
+17:38:54.231 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=9b flags=40 plen=0 blk=3074
+17:38:55.233 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=9a flags=40 plen=0 blk=3075
+17:38:56.234 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=99 flags=40 plen=0 blk=3076
+17:38:57.236 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=98 flags=40 plen=0 blk=3077
+17:38:58.236 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=97 flags=40 plen=0 blk=3078
+17:38:59.237 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=96 flags=40 plen=0 blk=3079
+17:39:00.238 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=95 flags=40 plen=0 blk=3080
+17:39:01.239 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=94 flags=40 plen=0 blk=3081
+17:39:02.240 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=93 flags=40 plen=0 blk=3082
+17:39:03.241 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=92 flags=40 plen=0 blk=3083
+17:39:04.242 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=91 flags=40 plen=0 blk=3084
+17:39:05.243 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=90 flags=40 plen=0 blk=3085
+17:39:05.243 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=c7 flags=20 plen=0 blk=3
+17:39:06.245 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=f7 flags=00 plen=214 blk=3086
+17:39:07.246 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=de flags=00 plen=238 blk=3087
+17:39:08.247 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=3f flags=00 plen=140 blk=3088
+17:39:09.249 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=68 flags=00 plen=98 blk=3089
+17:39:10.250 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=bd flags=00 plen=267 blk=3090
+17:39:11.251 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=a6 flags=00 plen=289 blk=3091
+17:39:12.253 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=b6 flags=00 plen=272 blk=3092
+17:39:13.253 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=df flags=00 plen=231 blk=3093
+17:39:14.254 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=d7 flags=00 plen=238 blk=3094
+17:39:15.255 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=d6 flags=00 plen=238 blk=3095
+17:39:16.256 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=9b flags=00 plen=295 blk=3096
+17:39:16.257 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=d6 flags=10 plen=0 blk=4
+17:39:16.258 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=84 flags=40 plen=0 blk=3097
+17:39:17.260 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=83 flags=40 plen=0 blk=3098
+17:39:18.260 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=82 flags=40 plen=0 blk=3099
+17:39:19.261 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=81 flags=40 plen=0 blk=3100
+17:39:20.262 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=80 flags=40 plen=0 blk=3101
+17:39:21.263 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7f flags=40 plen=0 blk=3102
+17:39:22.264 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7e flags=40 plen=0 blk=3103
+17:39:23.266 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7d flags=40 plen=0 blk=3104
+17:39:24.267 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7c flags=40 plen=0 blk=3105
+17:39:25.267 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7b flags=40 plen=0 blk=3106
+17:39:26.268 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=7a flags=40 plen=0 blk=3107
+17:39:27.269 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=79 flags=40 plen=0 blk=3108
+17:39:27.270 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=c5 flags=20 plen=0 blk=5
+17:39:28.272 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=8c flags=00 plen=297 blk=3109
+17:39:29.273 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=d7 flags=00 plen=222 blk=3110
+17:39:30.274 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=c6 flags=00 plen=238 blk=3111
+17:39:31.276 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=c5 flags=00 plen=238 blk=3112
+17:39:32.276 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=aa flags=00 plen=263 blk=3113
+17:39:33.277 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=8b flags=00 plen=293 blk=3114
+17:39:34.278 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=9f flags=00 plen=272 blk=3115
+17:39:35.280 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=c8 flags=00 plen=231 blk=3116
+17:39:36.280 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=c0 flags=00 plen=238 blk=3117
+17:39:37.281 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=bf flags=00 plen=238 blk=3118
+17:39:38.282 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=84 flags=00 plen=295 blk=3119
+17:39:38.283 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=d4 flags=10 plen=0 blk=6
+17:39:38.284 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=6d flags=40 plen=0 blk=3120
+17:39:39.285 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=6c flags=40 plen=0 blk=3121
+17:39:40.286 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=6b flags=40 plen=0 blk=3122
+17:39:41.286 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=6a flags=40 plen=0 blk=3123
+17:39:42.287 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=69 flags=40 plen=0 blk=3124
+17:39:43.289 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=68 flags=40 plen=0 blk=3125
+17:39:44.289 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=67 flags=40 plen=0 blk=3126
+17:39:45.291 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=66 flags=40 plen=0 blk=3127
+17:39:46.291 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=65 flags=40 plen=0 blk=3128
+17:39:47.293 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=64 flags=40 plen=0 blk=3129
+17:39:48.294 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=63 flags=40 plen=0 blk=3130
+17:39:49.295 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=2 lrc=62 flags=40 plen=0 blk=3131
+17:39:49.296 [DEBUG] XExp: XioHarvard Header: $PKT pid=1 src=1 lrc=c3 flags=20 plen=0 blk=7
+17:39:50.299 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=7b flags=00 plen=291 blk=3132
+17:39:51.300 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=78 flags=00 plen=293 blk=3133
+17:39:52.301 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=b7 flags=00 plen=230 blk=3134
+17:39:53.301 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=ae flags=00 plen=238 blk=3135
+17:39:54.303 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=ad flags=00 plen=238 blk=3136
+17:39:55.303 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=96 flags=00 plen=259 blk=3137
+17:39:56.304 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=77 flags=00 plen=289 blk=3138
+17:39:57.306 [DEBUG] XExp: XioHarvard Header: $PKT pid=3 src=2 lrc=7f flags=00 plen=280 blk=3139
+
+XExp Starting: Sat Mar 29 18:35:57 2025
+18:35:57.051 XExp: xiomas_export V1.0 Starting
+
+XExp Starting: Sat Mar 29 18:41:08 2025
+18:41:08.107 XExp: xiomas_export V1.0 Starting
+18:41:08.111 [ERROR] XExp: xexp: connect() failure in DAS_IO::Socket:/var/run/monarch/xiomas/ip_ex: No such file or directory
+18:41:08.111 [DEBUG] XExp: xexp: reset() delay 5 secs disconnected
+18:41:08.111 [ERROR] XExp: xexp: connect() failure in DAS_IO::Socket:/var/run/monarch/xiomas/ip_ex: No such file or directory
+18:41:08.111 [DEBUG] XExp: xexp: reset() delay 5 secs disconnected
+18:41:13.112 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:13.112 [DEBUG] XExp: xexp: Reconnecting
+18:41:13.113 [DEBUG] XExp: xexp: reset() delay 10 secs disconnected
+18:41:13.113 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:13.113 [DEBUG] XExp: xexp: Reconnecting
+18:41:13.114 [DEBUG] XExp: xexp: reset() delay 10 secs disconnected
+18:41:23.113 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:23.114 [DEBUG] XExp: xexp: Reconnecting
+18:41:23.115 [DEBUG] XExp: xexp: reset() delay 20 secs disconnected
+18:41:23.116 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:23.116 [DEBUG] XExp: xexp: Reconnecting
+18:41:23.117 [DEBUG] XExp: xexp: reset() delay 20 secs disconnected
+18:41:43.118 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:43.118 [DEBUG] XExp: xexp: Reconnecting
+18:41:43.119 [DEBUG] XExp: xexp: reset() delay 40 secs disconnected
+18:41:43.120 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:41:43.120 [DEBUG] XExp: xexp: Reconnecting
+18:41:43.120 [DEBUG] XExp: xexp: reset() delay 40 secs disconnected
+18:42:23.132 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:42:23.132 [DEBUG] XExp: xexp: Reconnecting
+18:42:23.134 [DEBUG] XExp: xexp: reset() delay 60 secs disconnected
+18:42:23.134 [DEBUG] XExp: xexp: ProcessData(8/8) Expired
+18:42:23.134 [DEBUG] XExp: xexp: Reconnecting
+18:42:23.135 [DEBUG] XExp: xexp: reset() delay 60 secs disconnected
+
+XExp Starting: Sat Mar 29 18:43:15 2025
+18:43:15.705 XExp: xiomas_export V1.0 Starting
+18:43:15.709 [ERROR] XExp: xtx: connect() failure in DAS_IO::Socket:/var/run/monarch/xiomas/ip_ex: No such file or directory
+18:43:15.709 [DEBUG] XExp: xtx: reset() delay 5 secs disconnected
+18:43:15.709 [ERROR] XExp: xux: connect() failure in DAS_IO::Socket:/var/run/monarch/xiomas/ip_ex: No such file or directory
+18:43:15.709 [DEBUG] XExp: xux: reset() delay 5 secs disconnected
+18:43:20.718 [DEBUG] XExp: xtx: ProcessData(8/8) Expired
+18:43:20.718 [DEBUG] XExp: xtx: Reconnecting
+18:43:20.720 [DEBUG] XExp: xtx: reset() delay 10 secs disconnected
+18:43:20.720 [DEBUG] XExp: xux: ProcessData(8/8) Expired
+18:43:20.720 [DEBUG] XExp: xux: Reconnecting
+18:43:20.721 [DEBUG] XExp: xux: reset() delay 10 secs disconnected
+18:43:30.734 [DEBUG] XExp: xtx: ProcessData(8/8) Expired
+18:43:30.735 [DEBUG] XExp: xtx: Reconnecting
+18:43:30.736 [DEBUG] XExp: xtx: reset() delay 20 secs disconnected
+18:43:30.736 [DEBUG] XExp: xux: ProcessData(8/8) Expired
+18:43:30.736 [DEBUG] XExp: xux: Reconnecting
+18:43:30.737 [DEBUG] XExp: xux: reset() delay 20 secs disconnected

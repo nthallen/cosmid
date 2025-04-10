@@ -5,6 +5,7 @@
 #include "dasio/client.h"
 #include "mlf_packet_logger.h"
 #include "XioHarvGatewayPacket.h"
+#include "nl_assert.h"
 
 using namespace DAS_IO;
 
@@ -35,17 +36,74 @@ class xiomas_tcp_export : public Client
      * May also receive command packets
      */
     bool app_input() override;
+    /**
+     * Write data from circular buffer to the socket if we're not
+     * too far ahead.
+     */
+    void process_queue();
     
     /**
      * @returns number of bytes of data currently in the buffer
      */
     uint32_t circ_length();
+
+    /**
+     * @param data points to data to add to the buffer
+     * @param n_bytes how many bytes to add
+     */
+    void circ_commit(const void *data, uint32_t n_bytes);
     /**
      * Circular buffer
      */
-    const uint8_t *circ;
+    uint8_t *circ;
     uint32_t circ_size, circ_head, circ_tail;
     static const int CIRC_BUFFER_SIZE = 270000;
+    
+    /**
+     * @returns the number of contiguous bytes at the head of
+     * the circular buffer.
+     */
+    inline uint32_t circ_head_bytes()
+    {
+      if (circ_head < 0) return 0;
+      return circ_tail > circ_head ?
+              circ_head-circ_tail :
+              circ_size - circ_head;
+    }
+
+    /**
+     * Removes n_bytes from the circular buffer. n_bytes
+     * must not exceed circ_head_bytes(), i.e. it must
+     * address a contiguous span within the circular
+     * buffer. Since this is done after transmitting,
+     * the outstanding_bytes count will be updated here
+     * as well.
+     * @param n_bytes The number of bytes to remove.
+     */
+    inline void circ_consume(uint32_t n_bytes)
+    {
+      nl_assert(n_bytes <= circ_head_bytes());
+      outstanding_bytes += n_bytes;
+      circ_head += n_bytes;
+      if (circ_head == circ_size)
+        circ_head = 0;
+      if (circ_head == circ_tail)
+        circ_head = -1; // empty
+    }
+
+    void circ_transmit(uint32_t n_bytes);
+
+    /**
+     * Records the number of bytes written to the socket that
+     * have not yet been acknowledged. It's OK to get ahead
+     * a bit, or we'll waste time waiting for the round trip
+     */
+    uint32_t outstanding_bytes;
+    /**
+     * Includes a HARD CODED PROTOCOL value of 2000 bytes, shared with
+     * tm_ip_export ipx_client::tcp_txfr_confirmed
+     */
+    inline bool CTS() { return outstanding_bytes < 2000 && obuf_empty(); }
 };
 
 /**
@@ -85,6 +143,7 @@ class xiomas_tcp_rcvr : public Socket, mlf_packet_logger
   protected:
     bool connected() override;
     bool protocol_input() override;
+    uint32_t get_txmit_size();
     bool sendFlag(uint8_t flag);
     inline bool sendCTS() { return sendFlag(xhfCTS); }
     inline bool sendNCTS() { return sendFlag(xhfNCTS); }
