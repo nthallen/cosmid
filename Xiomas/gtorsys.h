@@ -188,7 +188,7 @@ EXTERN_C void ATTR_NORETURN linuxAssertFail(const char *pszAssertion, const char
 //---------------------------------------------------------------------
 #if defined(__X86__) || defined(__X64__) || defined(__X86__) || defined(__amd64__)
 #define nop()	asm volatile("nop")
-#elif defined(__ARM__)
+#elif defined(__ARM__) || defined(__arm__)
 #define nop()	asm volatile("nop");
 #else
 #	error "No Processor Defined"
