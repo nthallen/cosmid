@@ -11,7 +11,7 @@ using namespace DAS_IO;
 
 
 #define MAX_SPKT_LENGTH 213183
-#define MAX_SPKT_DATA_PER_SERIO_PKT 946
+#define MAX_SPKT_DATA_PER_SERIO_PKT 956
 
 /**
  * One-way dump of serio_pkt data to tm_ip_export for
@@ -169,8 +169,9 @@ class xiomas_tcp_svc : public Socket
 };
 
 /**
- * Separate outbound UDP socket to avoid needing
- * to override fillbuf to use recvfrom()
+ * Separate outbound UDP socket back to the
+ * instrument to avoid needing to override fillbuf
+ * to use recvfrom()
  */
 class xiomas_udp_txmtr : public Socket
 {

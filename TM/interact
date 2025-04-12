@@ -5,8 +5,8 @@
   Launch    -TMC-   lgr -N $(mlf_find LOG) -n lgr
   Launch    tm_gen  cosmidcol -v
   Launch    cmd     cosmidsrvr -H srvr: -S: -v
-  Launch    ipx     tm_ip_export -H Relay:$spi4 -E cosmid.sat -vv
-  Launch    -       xiomas_export -H xutx:10.11.97.95 -v
+  Launch    ipx     tm_ip_export -H Relay:$relay_ext -E cosmid.sat -vv
+  Launch    -       xiomas_export -H xutx:10.11.97.95 -vv
 # Launch    -       POPS -H UDPr:10.11.97.100
 # Launch    -       POPS -H UDPr:10.11.97.100 -H POPS:10.11.97.51 -s pops2 -n POPS2
   Launch    -       tmdf

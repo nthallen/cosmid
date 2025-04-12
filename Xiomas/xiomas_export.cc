@@ -16,7 +16,7 @@ xiomas_tcp_export::xiomas_tcp_export(const char *iname)
   : Client("xtx", RCVR_BUFSIZE, 0, "ipx", "tcp"),
     circ((uint8_t*)new_memory(CIRC_BUFFER_SIZE)),
     circ_size(CIRC_BUFFER_SIZE),
-    circ_head(-1),
+    circ_head(CIRC_BUFFER_SIZE+1),
     circ_tail(0),
     outstanding_bytes(0)
 {
@@ -39,6 +39,8 @@ void xiomas_tcp_export::forward_packet(const uint8_t *bfr, int n_bytes)
     }
     hdr.LRC = -hdr.LRC;
   }
+  msg(MSG_DBG(1), "%s: Committing %d+%d=%d bytes for TCP", iname,
+    sizeof(hdr), n_bytes, n_bytes+sizeof(hdr));
   circ_commit(&hdr, sizeof(hdr));
   circ_commit(bfr, n_bytes);
   process_queue();
@@ -119,7 +121,7 @@ uint32_t xiomas_tcp_export::circ_space()
  */
 uint32_t xiomas_tcp_export::circ_length()
 {
-  return circ_head < 0 ? 0 :
+  return circ_head > circ_size ? 0 :
     (circ_tail > circ_head ? circ_tail-circ_head :
      circ_size-circ_head+circ_tail);
 }
@@ -134,7 +136,7 @@ void xiomas_tcp_export::circ_commit(const void *data, uint32_t n_bytes)
   if (n_bytes)
   {
     // We know we are not full
-    if (circ_head < 0) {
+    if (circ_head > circ_size) {
       circ_head = 0;
       circ_tail = 0;
     }
@@ -233,6 +235,7 @@ void xiomas_udp_export::forward_packet(const unsigned char *bfr, int n_bytes)
     }
     hdr.LRC = -hdr.LRC;
   }
+  msg(MSG_DBG(1), "%s: forward_packet(%d,%d)", iname, io[0].iov_len, io[1].iov_len);
   iwritev(io,2);
 }
 
@@ -283,7 +286,7 @@ bool xiomas_tcp_rcvr::protocol_input()
       case xtr_lost:
         cp0 = cp;
         nc0 = nc;
-        if (not_found('$', true))
+        if (not_found('$', false))
         {
           bytes_discarding += nc0-cp0;
         } else {
@@ -335,7 +338,7 @@ bool xiomas_tcp_rcvr::protocol_input()
                   iname, bytes_discarding);
           bytes_discarding = 0;
         }
-        if (hdr->m_uSource != xhsrcScanner)
+        if (hdr->m_uSource != xhsrcOPU /* xhsrcScanner */ )
         {
           report_err("%s: Unexpected packet source %d", iname, hdr->m_uSource);
         }
@@ -344,9 +347,6 @@ bool xiomas_tcp_rcvr::protocol_input()
         {
           sendCTS();
         }
-
-        // setup the packet
-        state = xtr_mid_pkt;
         switch (hdr->m_uPacketID)
         {
           case xhpidFireLayer:	// fire layer imagery frame
@@ -356,6 +356,10 @@ bool xiomas_tcp_rcvr::protocol_input()
           default:
             msg(MSG_WARN, "%s: Unexpected packet ID %d", iname, hdr->m_uPacketID);
         }
+
+        msg(MSG_DBG(1), "%s: Rec'd SPkt of %u bytes", iname, bytes_remaining_in_packet);
+        // setup the packet
+        state = xtr_mid_pkt;
         // Figure out the total size after packetization
         {
           uint32_t n_pkts =
@@ -423,7 +427,9 @@ Socket *xiomas_tcp_svc::new_client(const char *iname, int fd)
   return rv;
 }
 
-/****** xiomas_udp_txmtr ******/
+/********* xiomas_udp_txmtr ***********
+ * Sends UDP Xiomas packets to Xiomas *
+ **************************************/
 
 xiomas_udp_txmtr::xiomas_udp_txmtr(const char *iname)
     : Socket(iname, "xutx", "xutx", RCVR_BUFSIZE, UDP_WRITE)
@@ -495,7 +501,7 @@ bool xiomas_udp_rcvr::protocol_input()
     return false;
   }
   xhgShowHeader(hdr);
-  if (hdr->m_uSource != xhsrcScanner)
+  if (hdr->m_uSource != xhsrcScanner )
   {
     report_err("%s: Unexpected packet source %d", iname, hdr->m_uSource);
     consume(nc);
@@ -540,13 +546,13 @@ bool xiomas_udp_rcvr::sendFlag(uint8_t flag)
   xhgFillHeader(&hdr, xhpidGWControl, xhsrcGateway, flag, 0, ++block_count);
   switch (flag) {
     case xhfCTS:
-      msg(MSG_DBG(1), "%s: Sending CTS", iname);
+      msg(MSG_DBG(2), "%s: Sending CTS", iname);
       break;
     case xhfNCTS:
-      msg(MSG_DBG(1), "%s: Sending NCTS", iname);
+      msg(MSG_DBG(2), "%s: Sending NCTS", iname);
       break;
     default:
-      msg(MSG_DBG(1), "%s: Sending flags 0x%02X", iname, flag);
+      msg(MSG_DBG(2), "%s: Sending flags 0x%02X", iname, flag);
       break;
   }
   xhgShowHeader(&hdr);
