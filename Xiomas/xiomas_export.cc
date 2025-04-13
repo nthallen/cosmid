@@ -77,6 +77,8 @@ bool xiomas_tcp_export::app_input()
               report_err("%s: ACK exceeds tx: %u", iname, sctrl->length);
               outstanding_bytes = 0;
             } else outstanding_bytes -= sctrl->length;
+            msg(MSG_DBG(1), "%s: Rec'd ACK %u outstanding: %u", iname,
+              sctrl->length, outstanding_bytes);
             process_queue();
             break;
           default:
@@ -99,12 +101,18 @@ void xiomas_tcp_export::process_queue()
   // I'm probably overthinking, since it's going
   // down in a stream. They have to come in as
   // complete packets, though.
-  uint32_t len = circ_length();
-  if (CTS() && len > 0)
-  {
-    if (len > MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr))
-      len = MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr);
-    circ_transmit(len);
+  for (;;) {
+    uint32_t len = circ_length();
+    if (CTS() && len > 0)
+    {
+      if (len > MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr))
+        len = MAX_SPKT_DATA_PER_SERIO_PKT + sizeof(serio_pkt_hdr);
+      circ_transmit(len);
+    } else {
+      msg(MSG_DBG(1), "%s: outstanding: %u circ_len: %u", iname,
+        outstanding_bytes, len);
+      break;
+    }
   }
 }
 
@@ -170,6 +178,7 @@ void xiomas_tcp_export::circ_transmit(uint32_t n_bytes)
     nl_assert(txmit_bytes > 0);
     if (n_bytes < txmit_bytes)
       txmit_bytes = n_bytes;
+    msg(MSG_DBG(1), "%s: iwrite(%u)", iname, txmit_bytes);
     iwrite((char*)&circ[circ_head], txmit_bytes);
     n_bytes -= txmit_bytes;
     circ_consume(txmit_bytes);
@@ -357,7 +366,6 @@ bool xiomas_tcp_rcvr::protocol_input()
             msg(MSG_WARN, "%s: Unexpected packet ID %d", iname, hdr->m_uPacketID);
         }
 
-        msg(MSG_DBG(1), "%s: Rec'd SPkt of %u bytes", iname, bytes_remaining_in_packet);
         // setup the packet
         state = xtr_mid_pkt;
         // Figure out the total size after packetization
@@ -369,14 +377,18 @@ bool xiomas_tcp_rcvr::protocol_input()
             bytes_remaining_in_packet + n_pkts * sizeof(serio_pkt_hdr);
           transmitting_current_packet = total_pkts_size <= exp->circ_space();
         }
+        msg(MSG_DBG(1), "%s: Rec'd SPkt of %u bytes, %stransmitting", iname,
+          bytes_remaining_in_packet, transmitting_current_packet ? "" : "not ");
 
         log_packet(buf+cp, txmit_size,
           xhgGetPacketLength(hdr) > 2000 ? log_newfile : log_default);
         break;
       case xtr_mid_pkt:
         txmit_size = get_txmit_size();
-        if (txmit_size)
+        if (txmit_size) {
+          msg(MSG_DBG(1), "%s: logging %u bytes to curfile", iname, txmit_size);
           log_packet(buf+cp, txmit_size, log_curfile);
+        }
         break;
     }
     // We should only reach here if we have set txmit_size
@@ -387,6 +399,7 @@ bool xiomas_tcp_rcvr::protocol_input()
       cp += txmit_size;
       bytes_remaining_in_packet -= txmit_size;
     }
+    else break;
   }
 
   report_ok(cp);

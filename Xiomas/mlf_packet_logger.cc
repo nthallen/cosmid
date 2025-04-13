@@ -27,9 +27,12 @@ void mlf_packet_logger::log_packet(const uint8_t *bfr, uint32_t pkt_len,
           log_mode mode)
 {
   if (ofd < 0 || (mode == log_newfile) ||
-      ((ofd >= 0) && (mode != log_newfile) &&
-        Bytes_in_File + (int)pkt_len > Bytes_per_File))
+      ((ofd >= 0) && (mode != log_curfile) &&
+        Bytes_in_File + (int)pkt_len > Bytes_per_File)) {
+    msg(MSG_DBG(1), "%s: log_packet %u mode %d",
+      miname, pkt_len, mode);
     next_file();
+  }
   nl_assert(ofd >= 0);
   int rv = write(ofd, bfr, pkt_len);
   if (rv < 0)

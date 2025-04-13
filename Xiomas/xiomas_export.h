@@ -23,7 +23,7 @@ class xiomas_tcp_export : public Client
   public:
     xiomas_tcp_export(const char *iname);
     void forward_packet(const uint8_t *bfr, int n_bytes);
-    static const int RCVR_BUFSIZE = 50;
+    static const int RCVR_BUFSIZE = 1000;
     /**
      * @returns number of bytes of data that can be added to the buffer
      */
@@ -65,7 +65,7 @@ class xiomas_tcp_export : public Client
      */
     inline uint32_t circ_head_bytes()
     {
-      if (circ_head < 0) return 0;
+      if (circ_head > circ_size) return 0;
       return circ_tail > circ_head ?
               circ_head-circ_tail :
               circ_size - circ_head;
@@ -88,7 +88,7 @@ class xiomas_tcp_export : public Client
       if (circ_head == circ_size)
         circ_head = 0;
       if (circ_head == circ_tail)
-        circ_head = -1; // empty
+        circ_head = (circ_size+1); // empty
     }
 
     void circ_transmit(uint32_t n_bytes);
