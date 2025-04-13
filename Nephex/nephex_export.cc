@@ -1,11 +1,19 @@
+#include "dasio/appid.h"
 #include "dasio/quit.h"
 #include "nephex_export.h"
 #include "nl.h"
 #include "oui.h"
 
-nephex_tcp_export(const char *iname)
-    : Client(iname, BUFSZ, 0, "ipx", "tcp")
+nephex_tcp_export::nephex_tcp_export(const char *iname)
+    : Client(iname, BUFSZ, 0, "ipx", "tcp"),
+      txfr_pending(false)
 {
+  set_obufsize(5*1024);
+};
+
+void nephex_tcp_export::forward_packet(const char *pkt)
+{
+  nl_assert(CTS());
 }
 
 const char *nephex_tcp_rcvr::mlf_base = "Nephex";
@@ -18,8 +26,8 @@ nephex_tcp_rcvr::nephex_tcp_rcvr(const char *iname,
       block_count(0),
       exp(exp)
 {
-  set_obufsize(5*1024);
-  // Should at least try to validate the remote IP address
+  // reduce the maximum delay for testing
+  set_retries(-1, 5, 10);
 }
 
 bool nephex_tcp_rcvr::connected()
@@ -30,32 +38,19 @@ bool nephex_tcp_rcvr::connected()
 
 bool nephex_tcp_rcvr::protocol_input()
 {
-  msg(MSG, "%s: Incoming TCP packet len %d", iname, nc);
+  msg(MSG, "%s: Incoming TCP packet nc %d", iname, nc);
   // Validate incoming packet
   // Packetize into serio_pkts
   // Log packet with a timestamp packet
-  // Forward packet to tm_ip_export
-  report_ok(nc);
-  return false;
-}
-
-bool nephex_tcp_rcvr::sendFlag(uint8_t flag)
-{
-  XioHarvardHeader hdr;
-  xhgFillHeader(&hdr, xhpidGWControl, xhsrcGateway, flag, 0, ++block_count);
-  switch (flag) {
-    case xhfCTS:
-      msg(MSG_DBG(1), "%s: Sending CTS", iname);
-      break;
-    case xhfNCTS:
-      msg(MSG_DBG(1), "%s: Sending NCTS", iname);
-      break;
-    default:
-      msg(MSG_DBG(1), "%s: Sending flags 0x%02X", iname, flag);
-      break;
+  // Forward packets to tm_ip_export
+  if (exp->CTS())
+  {
+    exp->forward_packet(buf);
+  } else if (nc-cp < 1000)
+  {
+    flags &= ~Fl_Read;
   }
-  xhgShowHeader(&hdr);
-  return iwrite((char *)&hdr, sizeof(hdr));
+  return false;
 }
 
 int main(int argc, char **argv)
