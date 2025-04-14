@@ -1,0 +1,59 @@
+#! /bin/bash
+
+spi4=10.245.83.82
+relay_ext=140.247.179.77
+
+function send_pkt {
+  pktlen=$1
+  # let i=i+10
+  label=$(printf '%4d: ' $pktlen)
+  let len=pktlen-${#label}
+  line10="1234567890"
+  line50="$line10$line10$line10${line10}${line10}"
+  line94="7890$line10$line10$line10${line50}123456789
+"
+  line100="$line50$line10$line10$line10${line10}123456789
+"
+
+  payload=""
+  if [ $len -gt 94 ]; then
+    payload="$payload$line94"
+    let len=len-94
+  fi
+  while [ $len -gt 100 ]; do
+    payload="$payload$line100"
+    let len=len-100
+  done
+  while [ $len -ge 50 ]; do
+    payload="$payload$line50"
+    let len=len-50
+  done
+  while [ $len -ge 10 ]; do
+    payload="$payload$line10"
+    let len=len-10
+  done
+  while [ $len -gt 0 ]; do
+    payload="$payload$len"
+    let len=len-1
+  done
+  packet="$label$payload"
+  echo "$packet"
+  echo "$packet" | socat -u STDIN UDP4-SENDTO:$relay_ext:1402 
+  sleep 1
+}
+
+function iterate {
+  start=$1
+  end=$2
+  step=$3
+  while [ $start -le $end ]; do
+    send_pkt $start
+    let start=start+step
+  done | tee -a UDP1402_send.log
+}
+
+iterate 1400 1520 20
+iterate 1480 1505 5
+iterate 1485 1500 1
+echo "Received $(grep ':' UDP1402_send.log | wc -l) packets"
+md5sum UDP1402_send.log
