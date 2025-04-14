@@ -1,0 +1,7 @@
+#! /bin/bash
+while true; do
+  socat UDP-RECVFROM:1402 STDOUT || break
+done | tee UDP1402_recv.log
+echo "Received $(grep ':' UDP1402_recv.log | wc -l) packets"
+md5sum UDP1402_recv.log
+
