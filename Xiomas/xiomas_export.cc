@@ -111,7 +111,7 @@ void xiomas_tcp_export::process_queue()
     } else {
       msg(MSG_DBG(1), "%s: outstanding: %u circ_len: %u", iname,
         outstanding_bytes, len);
-      if (client)
+      if (len == 0 && client)
       {
         client->ack();
         dereference(client);
@@ -285,6 +285,7 @@ void xiomas_tcp_rcvr::ack()
 {
   TO.Set(120,0);
   flags |= Fl_Timeout;
+  msg(MSG_DBG(1), "%s: Received ACK, timeout set", iname);
 }
 
 bool xiomas_tcp_rcvr::connected()
