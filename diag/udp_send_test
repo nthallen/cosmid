@@ -55,5 +55,5 @@ function iterate {
 iterate 1400 1520 20
 iterate 1480 1505 5
 iterate 1485 1500 1
-echo "Received $(grep ':' UDP1402_send.log | wc -l) packets"
+echo "Sent $(grep ':' UDP1402_send.log | wc -l) packets"
 md5sum UDP1402_send.log
