@@ -7,6 +7,27 @@
 
 using namespace DAS_IO;
 
+class APid
+{
+  public:
+    APid();
+    uint16_t get_size(int APID);
+    bool OK_to_transmit(int APID);
+    bool not_reported(int APID);
+    static APid *APid_defs;
+  protected:
+    void def(const char *mnc, int APID, uint16_t size, float per, uint16_t dec);
+    static const int MAX_APID = 151;
+    struct {
+      const char *mnc;
+      uint16_t size;
+      float period;
+      uint16_t decimation_rate;
+      uint16_t n_to_skip;
+      uint16_t reported;
+    } defs[MAX_APID+1];
+};
+
 class nephex_tcp_export : public Client {
   public:
     nephex_tcp_export(const char *iname);
@@ -14,11 +35,17 @@ class nephex_tcp_export : public Client {
      * Forwards packet to tm_ip_export.
      * @param hdr pointer to validated serio_pkt_hdr
      */
-    void forward_packet(uint8_t *hdr);
-    inline bool CTS() { return !txfr_pending; }
+    void forward_packet(const uint8_t *hdr, uint16_t len);
+    inline bool CTS() { return outstanding_bytes < 2000 && obuf_empty(); }
   protected:
-    bool txfr_pending;
-    static const int BUFSZ = 4096;
+    bool app_input() override;
+    /**
+     * Records the number of bytes written to the socket that
+     * have not yet been acknowledged. It's OK to get ahead
+     * a bit, or we'll waste time waiting for the round trip
+     */
+    uint32_t outstanding_bytes;
+    static const int IBUFSZ = 4096;
 };
 
 /**

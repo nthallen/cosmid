@@ -1,0 +1,12 @@
+Moduledef Nephex {
+}
+
+DISTRIB = @MODDIR@/../nephex_export
+DISTRIB = @MODDIR@/../nephex_emulator
+%%
+.PHONY : clean-nephex @MODDIR@/../nephex_export @MODDIR@/../nephex_emulator
+@MODDIR@/../nephex_export @MODDIR@/../nephex_emulator :
+	$(MAKE) --directory=@MODDIR@/..
+clean-dist : clean-nephex
+clean-nephex :
+	$(MAKE) --directory=@MODDIR@/.. clean

@@ -8,6 +8,7 @@ Module POPS pfx=POPS2
 Module coretemps_select
 Module tm_ipx
 Module Xiomas
+Module Nephex
 Module Sat Prefix=cosmid Relay=$spi4
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
