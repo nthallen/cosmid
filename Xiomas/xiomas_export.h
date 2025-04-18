@@ -13,6 +13,8 @@ using namespace DAS_IO;
 #define MAX_SPKT_LENGTH 213183
 #define MAX_SPKT_DATA_PER_SERIO_PKT 956
 
+class xiomas_tcp_rcvr;
+
 /**
  * One-way dump of serio_pkt data to tm_ip_export for
  * incorporation into satellite or radio transmission
@@ -28,6 +30,7 @@ class xiomas_tcp_export : public Client
      * @returns number of bytes of data that can be added to the buffer
      */
     uint32_t circ_space();
+    void request_ack(xiomas_tcp_rcvr *client);
   protected:
     /**
      * Receives acknowledges from tm_ip_export indicating how many
@@ -99,6 +102,9 @@ class xiomas_tcp_export : public Client
      * a bit, or we'll waste time waiting for the round trip
      */
     uint32_t outstanding_bytes;
+
+    xiomas_tcp_rcvr *client;
+
     /**
      * Includes a HARD CODED PROTOCOL value of 2000 bytes, shared with
      * tm_ip_export ipx_client::tcp_txfr_confirmed
@@ -137,12 +143,19 @@ class xiomas_tcp_rcvr : public Socket, mlf_packet_logger
   public:
     xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
         xiomas_tcp_export *exp);
+    /**
+     * Called from xiomas_tcp_export::process_queue() when the
+     * output queue is empty. Should send a CTS message. Or
+     * maybe set a timeout to send a message.
+     */
+    void ack();
     inline bool CTS() { return obuf_empty(); }
     static const char *mlf_base;
     static const char *mlf_config;
   protected:
     bool connected() override;
     bool protocol_input() override;
+    bool protocol_timeout() override;
     uint32_t get_txmit_size();
     bool sendFlag(uint8_t flag);
     inline bool sendCTS() { return sendFlag(xhfCTS); }

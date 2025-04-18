@@ -111,6 +111,12 @@ void xiomas_tcp_export::process_queue()
     } else {
       msg(MSG_DBG(1), "%s: outstanding: %u circ_len: %u", iname,
         outstanding_bytes, len);
+      if (client)
+      {
+        client->ack();
+        dereference(client);
+        client = 0;
+      }
       break;
     }
   }
@@ -183,6 +189,13 @@ void xiomas_tcp_export::circ_transmit(uint32_t n_bytes)
     n_bytes -= txmit_bytes;
     circ_consume(txmit_bytes);
   }
+}
+
+void xiomas_tcp_export::request_ack(xiomas_tcp_rcvr *client)
+{
+  if (this->client)
+    dereference(this->client);
+  this->client = client;
 }
 
 /****** xiomas_udp_export ******/
@@ -266,6 +279,12 @@ xiomas_tcp_rcvr::xiomas_tcp_rcvr(Socket *orig, const char *iname, int fd,
 {
   // set_obufsize(5*1024); // I don't think I need an obuf here
   // Should at least try to validate the remote IP address
+}
+
+void xiomas_tcp_rcvr::ack()
+{
+  TO.Set(120,0);
+  flags |= Fl_Timeout;
 }
 
 bool xiomas_tcp_rcvr::connected()
@@ -398,11 +417,21 @@ bool xiomas_tcp_rcvr::protocol_input()
         exp->forward_packet(buf+cp, txmit_size);
       cp += txmit_size;
       bytes_remaining_in_packet -= txmit_size;
+      if (bytes_remaining_in_packet == 0)
+        exp->request_ack(this);
     }
     else break;
   }
 
   report_ok(cp);
+  return false;
+}
+
+bool xiomas_tcp_rcvr::protocol_timeout()
+{
+  TO.Clear();
+  flags &= Fl_Timeout;
+  sendCTS();
   return false;
 }
 
