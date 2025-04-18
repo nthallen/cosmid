@@ -4,6 +4,7 @@
 #include "nl.h"
 #include "nl_assert.h"
 #include "oui.h"
+#include "crc16modbus.h"
 
 APid *APid::APid_defs;
 
@@ -17,7 +18,7 @@ APid::APid()
   }
   def("ACCEL", 1, 28, 0.1, 20);
   def("SCI", 2, 36, 1, 10);
-  def("STATUS", 3, 92, 1, 20);
+  def("STATUS", 3, 88, 1, 20);
   def("HSK", 4, 20, 5, 20);
   def("HTR", 5, 20, 5, 4);
   def("CFG", 6, 96, 0, 0);
@@ -52,7 +53,7 @@ void APid::def(const char *mnc, int APID, uint16_t size, float per, uint16_t dec
   defs[APID].size = size;
   defs[APID].period = per;
   defs[APID].decimation_rate = dec;
-  defs[APID].n_to_skip = 0;
+  defs[APID].n_to_skip = dec ? 1 : 0;
   defs[APID].reported = 0;
 }
 
@@ -91,9 +92,30 @@ nephex_tcp_export::nephex_tcp_export(const char *iname)
   set_obufsize(5*1024);
 };
 
-void nephex_tcp_export::forward_packet(const uint8_t *pkt, uint16_t len)
+void nephex_tcp_export::forward_packet(const uint8_t *bfr, uint16_t n_bytes)
 {
   nl_assert(CTS());
+  struct iovec io[2];
+  serio_pkt_hdr hdr;
+
+  hdr.LRC = 0;
+  hdr.type = pkt_type_NPH;
+  hdr.length = n_bytes;
+  { unsigned CRC = crc16modbus_word(0,0,0);
+    CRC = crc16modbus_word(CRC, bfr, n_bytes);
+    hdr.CRC = CRC;
+    uint8_t *hdrp = (uint8_t *)&hdr;
+    for (uint32_t i = 1; i < sizeof(hdr); ++i) {
+      hdr.LRC += hdrp[i];
+    }
+    hdr.LRC = -hdr.LRC;
+  }
+  io[0].iov_len = serio::pkt_hdr_size;
+  io[0].iov_base = &hdr;
+  io[1].iov_len = n_bytes;
+  io[1].iov_base = (void *)bfr;
+  iwritev(io, 2);
+  outstanding_bytes += serio::pkt_hdr_size + n_bytes;
 }
 
 bool nephex_tcp_export::app_input()
@@ -124,7 +146,8 @@ bool nephex_tcp_export::app_input()
           case ctrl_subtype_ACK:
             if (sctrl->length > outstanding_bytes)
             {
-              report_err("%s: ACK exceeds tx: %u", iname, sctrl->length);
+              report_err("%s: ACK (%u) exceeds outstanding (%u)", iname,
+                  sctrl->length, outstanding_bytes);
               outstanding_bytes = 0;
             } else outstanding_bytes -= sctrl->length;
             msg(MSG_DBG(1), "%s: Rec'd ACK %u outstanding: %u", iname,
@@ -197,11 +220,13 @@ bool nephex_tcp_rcvr::protocol_input()
     if (apid_len+6 != Len && APid::APid_defs->not_reported(APid))
       report_err("%s: Incorrect packet length APID:%u expected:%u Len:%u",
         iname, APid, apid_len+6, Len);
-    
+
     log_packet(&buf[cp-8], Len+9);
     if (exp->CTS() && APid::APid_defs->OK_to_transmit(APid))
     {
       // Forward the packet
+      msg(MSG_DBG(1), "%s: Fwd APID:%u %u+%u=%u", iname, APid, Len+9,
+          serio::pkt_hdr_size, serio::pkt_hdr_size+Len+9);
       exp->forward_packet(&buf[cp-8], Len+9);
       // Look at the next one
     }
@@ -216,9 +241,9 @@ int main(int argc, char **argv)
   oui_init_options(argc, argv);
   {
     Loop ELoop;
-    
+
     AppID.report_startup();
-    
+
     APid::APid_defs = new APid();
 
     nephex_tcp_export *NTEXP = new nephex_tcp_export("NTEXP");
@@ -230,11 +255,11 @@ int main(int argc, char **argv)
       new nephex_tcp_rcvr("NTCP", NTEXP);
     NTCP->connect();
     ELoop.add_child(NTCP);
-    
+
     Quit *Q = new Quit();
     Q->connect();
     ELoop.add_child(Q);
-    
+
     /* Data forward to tm_ip_export */
     /* Quit service from srvr */
     /* TM status to collection */
