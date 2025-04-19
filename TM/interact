@@ -6,7 +6,7 @@
   Launch    tm_gen  cosmidcol -v
   Launch    cmd     cosmidsrvr -H srvr: -S: -v
   Launch    ipx     tm_ip_export -H Relay:$relay_ext -E cosmid.sat -vv
-  Launch    -       xiomas_export -H xutx:$xiomas -vvv
+  Launch    -       xiomas_export -H xutx:$xiomas -T $(mlf_find XioTCP -U $(mlf_find XioUDP)) -v
 # Launch    -       nephex_emulator -vv
 # Launch    -       nephex_export -H Nephex:127.0.0.1 -vv
   Launch    -       POPS -H UDPr:10.11.97.100

@@ -196,6 +196,7 @@ void xiomas_tcp_export::request_ack(xiomas_tcp_rcvr *client)
   if (this->client)
     dereference(this->client);
   this->client = client;
+  client->reference();
 }
 
 /****** xiomas_udp_export ******/
@@ -285,7 +286,7 @@ void xiomas_tcp_rcvr::ack()
 {
   TO.Set(120,0);
   flags |= Fl_Timeout;
-  msg(MSG_DBG(1), "%s: Received ACK, timeout set", iname);
+  msg(MSG_DBG(0), "%s: Received ACK, timeout set", iname);
 }
 
 bool xiomas_tcp_rcvr::connected()
@@ -397,7 +398,7 @@ bool xiomas_tcp_rcvr::protocol_input()
             bytes_remaining_in_packet + n_pkts * sizeof(serio_pkt_hdr);
           transmitting_current_packet = total_pkts_size <= exp->circ_space();
         }
-        msg(MSG_DBG(1), "%s: Rec'd SPkt of %u bytes, %stransmitting", iname,
+        msg(MSG_DBG(0), "%s: Rec'd SPkt of %u bytes, %stransmitting", iname,
           bytes_remaining_in_packet, transmitting_current_packet ? "" : "not ");
 
         log_packet(buf+cp, txmit_size,
@@ -442,7 +443,7 @@ bool xiomas_tcp_rcvr::sendFlag(uint8_t flag)
   xhgFillHeader(&hdr, xhpidGWControl, xhsrcGateway, flag, 0, ++block_count);
   switch (flag) {
     case xhfCTS:
-      msg(MSG_DBG(1), "%s: Sending CTS", iname);
+      msg(MSG_DBG(0), "%s: Sending CTS", iname);
       break;
     case xhfNCTS:
       msg(MSG_DBG(1), "%s: Sending NCTS", iname);

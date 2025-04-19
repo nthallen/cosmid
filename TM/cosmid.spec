@@ -12,7 +12,7 @@ Module Nephex
 Module Sat Prefix=cosmid Relay=$spi4
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
-DISTRIB = interact services
+DISTRIB = interact services services.cosmid.sat
 IGNORE = Makefile "*.exe"
 
 cosmidtxsrvr :

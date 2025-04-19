@@ -3,7 +3,7 @@
 #include "dasio/loop.h"
 #include "dasio/socket.h"
 #include "dasio/client.h"
-#include "mlf_packet_logger.h"
+#include "dasio/mlf_packet_logger.h"
 #include "XioHarvGatewayPacket.h"
 #include "nl_assert.h"
 

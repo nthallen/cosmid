@@ -1,6 +1,16 @@
 <package> xiomas_export
 <include> msg oui
 <include> host_session
+<include> "xiomas_export.h"
+
+<opts> "T:U:"
+<sort>
+        -T <TCP (Sidus) logging config>
+        -U <UDP (Xiomas) logging config>
+
+<switch>
+  case 'T': xiomas_tcp_rcvr::mlf_config = optarg; break;
+  case 'U': xiomas_udp_rcvr::mlf_config = optarg; break;
 
 <unsort>
 Host_Session function xutx: Where to send service xutx UDP command and control

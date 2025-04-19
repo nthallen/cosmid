@@ -4,7 +4,7 @@ LDFLAGS = -L/usr/local/lib -ldasio -lnl -lpthread
 
 all : nephex_emulator nephex_export
 
-NEXPOBJ=nephex_export.o nephex_exportoui.o mlf_packet_logger.o
+NEXPOBJ=nephex_export.o nephex_exportoui.o
 NEXPCLEAN=nephex_export $(NEXPOBJ) nephex_exportoui.cc
 NEMOBJ=nephex_emulator.o nephex_emulatoroui.o
 NEMCLEAN=nephex_emulator $(NEMOBJ) nephex_emulatoroui.cc
