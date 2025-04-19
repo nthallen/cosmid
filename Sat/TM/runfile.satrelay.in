@@ -1,3 +1,5 @@
+# This is intended to run on a local relay machine, such
+# as nortvmu22. It relays telemetry data from @Relay@
   Launch      memo   memo -o $Experiment.log -l4
               [ -z "$launch_err" ] &&
                 msg "Running script runfile.sat"

@@ -18,8 +18,10 @@ coretemps.tbl
 runfile.sat
 runfile.satrelay
 sat.doit
+satrelay.doit
 ../Sat/TM/Experiment.config
 satdoit.dep
+satrelaydoit.dep
 cosmidcmd.cc
 cosmidcmd.dat
 cosmidcmd.h
@@ -88,10 +90,12 @@ coretemps.tbl
 runfile.sat
 runfile.satrelay
 sat.doit
+satrelay.doit
 ../Sat/TM/Experiment.config
 Makefile
 *.exe
 satdoit
+satrelaydoit
 cosmidtxsrvr
 cosmiddispnc
 cosmidalgo

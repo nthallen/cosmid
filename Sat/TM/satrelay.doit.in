@@ -1,0 +1,5 @@
+display @Prefix@disp -n disp -H bfr:@Relay2@
+client [SI|RT] @Prefix@clt -H srvr:@Relay@
+extraction @Prefix@jsonext -n json -H bfr:@Relay2@
+memo
+batchfile runfile.satrelay

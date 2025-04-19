@@ -1,17 +1,17 @@
-ModuleDef Sat [ Prefix=cosmid Relay=$spi4 ] {
+ModuleDef Sat [ Prefix=cosmid Relay=$spi4 Relay2=$nortvmu22 ] {
   Module to collect customizations required for telemetry reception.
 }
 
 satdoit : sat.doit:sat.doit.in
-#satrelaydoit : satrelay.doit
+satrelaydoit : satrelay.doit:satrelay.doit.in
 - : runfile.sat:runfile.sat.in
 - : runfile.satrelay:runfile.satrelay.in
 - : @MODDIR@/Experiment.config:Experiment.config.in
 DISTRIB = runfile.sat
 DISTRIB = runfile.satrelay
-IGNORE = runfile.sat runfile.satrelay sat.doit
+IGNORE = runfile.sat runfile.satrelay sat.doit satrelay.doit
 IGNORE = @MODDIR@/Experiment.config
-OBJ = runfile.sat runfile.satrelay sat.doit
+OBJ = runfile.sat runfile.satrelay sat.doit satrelay.doit
 OBJ = @MODDIR@/Experiment.config
 
 %%
