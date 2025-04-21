@@ -55,7 +55,7 @@ Partition
 
 State POPS2_Init {
       depending on (Shutdown) { Validate POPS2_Shutdown; }
-      { if (POPS_srvr == 2) Validate POPS2_Active; }
+      { if (POPS2_srvr == 2) Validate POPS2_Active; }
       > _Algo P3 POPS2_Init
       Hold until (POPS_srvr == 1);
       Validate POPS2_Idle;

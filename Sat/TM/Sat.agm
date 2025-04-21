@@ -22,3 +22,7 @@ distribution-Sat :
 	@for f in VERSION bin satdoit satrelaydoit src; do \
 	  [ -e $(TGTDIR)/Sat/$$f ] || ln -fs ../$$f $(TGTDIR)/Sat/$$f; done
 	@distribute $(FORCE) $(TGTDIR)/Sat @MODDIR@/Experiment.config
+	@[ -d $(TGTDIR)/SatRelay ] || mkdir $(TGTDIR)/SatRelay
+	@for f in VERSION bin satdoit satrelaydoit src; do \
+	  [ -e $(TGTDIR)/SatRelay/$$f ] || ln -fs ../$$f $(TGTDIR)/SatRelay/$$f; done
+	@distribute $(FORCE) $(TGTDIR)/SatRelay @MODDIR@/Experiment.config

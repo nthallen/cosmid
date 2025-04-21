@@ -11,7 +11,8 @@ Module coretemps_select
 Module tm_ipx
 Module Xiomas
 Module Nephex
-Module Sat Prefix=cosmid Relay=$spi4
+#Module Sat Prefix=cosmid Relay=$spi4
+Module Sat Prefix=cosmid Relay= Relay2=
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
 DISTRIB = interact services services.cosmid.sat
@@ -21,6 +22,6 @@ OBJ = SWData.h SWData.tmc SWData_col.tmc SWData.cmd
 
 cosmidtxsrvr :
 cosmiddisp : cosmid.tbl POPS.tbl POPS2.tbl
-cosmidalgo : cosmid.tma
+cosmidalgo : cosmid.tma $swsbase
 cosmidjsonext : $extbase $genuibase
 doit : cosmid.doit

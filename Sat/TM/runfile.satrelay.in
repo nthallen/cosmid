@@ -1,9 +1,10 @@
 # This is intended to run on a local relay machine, such
-# as nortvmu22. It relays telemetry data from @Relay@
+# as nortvmu22. It relays telemetry data from $spi4
   Launch      memo   memo -o $Experiment.log -l4
               [ -z "$launch_err" ] &&
                 msg "Running script runfile.sat"
   Launch      tm_bfr bfr -H bfr: -S:
   Launch      -TMC-  lgr -N `mlf_find LOG` -n lgr
-  Launch      tm_gen tm_relay -H bfr:@Relay@
+  Launch      tm_gen serin
+  Launch      -      tm_ip_relay -H Relay:@Relay@ -v
   Launch      cmd    playbacksrvr -H srvr: -S: -v

@@ -1,9 +1,12 @@
 . /home/@Prefix@/Experiment.config
-Experiment=$Experiment.sat
-FlightNode=@Relay@
 GSE=
 HomeDir=/home/@Prefix@/Sat
-# RUNFILE=runfile.sat
+RUNFILE=
 case $0 in
-  */satrelaydoit) FlightNode=$nortvmu22;;
+  */satrelaydoit)
+    FlightNode=@Relay2@
+    Experiment=$Experiment.satrelay;;
+  */satdoit)
+    FlightNode=@Relay@
+    Experiment=$Experiment.sat;;
 esac

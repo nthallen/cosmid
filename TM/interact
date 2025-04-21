@@ -5,7 +5,7 @@
   Launch    -TMC-   lgr -N $(mlf_find LOG) -n lgr
   Launch    tm_gen  cosmidcol -v
   Launch    cmd     cosmidsrvr -H srvr: -S: -v
-  Launch    ipx     tm_ip_export -H Relay:$relay_ext -E cosmid.sat -v
+  Launch    ipx     tm_ip_export -H Relay:$relay_nort -E cosmid.sat -v
   Launch    -       xiomas_export -H xutx:$xiomas -T $(mlf_find XioTCP) -U $(mlf_find XioUDP) -v
 # Launch    -       nephex_emulator -vv
   Launch    -       nephex_export -H Nephex:$nephex -N $(mlf_find Nephex) -v
