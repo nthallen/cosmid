@@ -1,24 +1,17 @@
+#-----------------------
+# P1 Mainline partition
+#-----------------------
+
 State Init {
       > _Algo P1 Init
       > Telemetry Start
-      Hold until (POPS_srvr == 1 || POPS_srvr == 2);
-   +4 { if (POPS_srvr == 2) Validate POPS1_Active; }
-   +1 > POPS Start
-      Hold until (POPS_srvr == 2);
-      Validate POPS1_Active;
-}
-
-State POPS1_Active {
-      > _Algo P1 POPS1_Active
-      Hold until (POPS2_srvr == 1);
+      Hold until valid (POPS1_Active, POPS2_Idle);
       Validate LaunchHold;
 }
 
 State LaunchHold {
       > _Algo P1 Launch_Hold
-      Hold until (POPS_P_mbar < 750.);
-   +1 > POPS2 Start
-      Hold until (POPS2_srvr == 2);
+      Hold until valid (POPS2_Active);
       Validate Flight;
 }
 
@@ -28,45 +21,62 @@ State Flight {
 
 State Shutdown {
       > _Algo P1 Shutdown
+      Hold until (POPS_srvr == 1 && POPS2_srvr == 1) or 10;
+   +1 > Quit
 }
 
-# POPS(1) partition
+#-----------------------
+# P2 POPS(1) partition
+#-----------------------
 Partition
 
 State POPS1_Init {
-      > _Algo P1 POPS1_Init
       { if (POPS_srvr == 2) Validate POPS1_Active; }
+      > _Algo P2 POPS1_Init
       Hold until (POPS_srvr == 1);
    +4 > POPS Start
 }
 
 State POPS1_Active {
-  > _Algo P1 POPS1_Active
+  > _Algo P2 POPS1_Active
   depending on (Shutdown) { Validate POPS1_Shutdown; }
 }
 
 State POPS1_Shutdown {
-  > _Algo P1 POPS1_Shutdown
+  > _Algo P2 POPS1_Shutdown
   > POPS Shutdown
 }
 
 
-# POPS2 partition
+#-----------------------
+# P3 POPS2 partition
+#-----------------------
+Partition
 
 State POPS2_Init {
-      > _Algo P1 POPS2_Init
+      depending on (Shutdown) { Validate POPS2_Shutdown; }
       { if (POPS_srvr == 2) Validate POPS2_Active; }
+      > _Algo P3 POPS2_Init
       Hold until (POPS_srvr == 1);
-   +4 > POPS2 Start
+      Validate POPS2_Idle;
+}
+
+State POPS2_Idle {
+      depending on (Shutdown) { Validate POPS2_Shutdown; }
+      { if (POPS2_srvr == 2) Validate POPS2_Active; }
+      > _Algo P3 POPS2_Idle
+      Hold until (POPS_srvr == 2 && POPS_P_mbar < 750.);
+   +1 > POPS2 Start
+      Hold until (POPS2_srvr == 2);
+      Validate POPS2_Active;
 }
 
 State POPS2_Active {
-  > _Algo P1 POPS2_Active
+  > _Algo P3 POPS2_Active
   depending on (Shutdown) { Validate POPS2_Shutdown; }
 }
 
 State POPS2_Shutdown {
-  > _Algo P1 POPS2_Shutdown
+  > _Algo P3 POPS2_Shutdown
   > POPS2 Shutdown
 }
-
