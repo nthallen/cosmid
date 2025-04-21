@@ -37,7 +37,7 @@
 #define DEBUG(...)
 #endif
 
-#define printf(fmt, ...) msg(MSG_DBG(2), fmt, ##__VA_ARGS__)
+#define printf(fmt, ...) msg(MSG_DBG(1), fmt, ##__VA_ARGS__)
 
 //:End Custom
 
