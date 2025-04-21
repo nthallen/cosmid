@@ -1,6 +1,8 @@
 # cosmid.spec
 tmcbase = base.tmc
 cmdbase = cosmid.cmd
+Module TMAstat TMA=cosmid.tma TextWidth=11
+swsbase = cosmid.sws
 genuibase = cosmid.genui
 Module TMbase mode=ignore
 Module POPS mode=server
@@ -14,6 +16,8 @@ TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
 DISTRIB = interact services services.cosmid.sat
 IGNORE = Makefile "*.exe"
+IGNORE = SWData.h SWData.tmc SWData_col.tmc SWData.cmd
+OBJ = SWData.h SWData.tmc SWData_col.tmc SWData.cmd
 
 cosmidtxsrvr :
 cosmiddisp : cosmid.tbl POPS.tbl POPS2.tbl

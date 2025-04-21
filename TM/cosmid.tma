@@ -1,3 +1,72 @@
 State Init {
-  > Telemetry Start
+      > _Algo P1 Init
+      > Telemetry Start
+      Hold until (POPS_srvr == 1 || POPS_srvr == 2);
+   +4 { if (POPS_srvr == 2) Validate POPS1_Active; }
+   +1 > POPS Start
+      Hold until (POPS_srvr == 2);
+      Validate POPS1_Active;
 }
+
+State POPS1_Active {
+      > _Algo P1 POPS1_Active
+      Hold until (POPS2_srvr == 1);
+      Validate LaunchHold;
+}
+
+State LaunchHold {
+      > _Algo P1 Launch_Hold
+      Hold until (POPS_P_mbar < 750.);
+   +1 > POPS2 Start
+      Hold until (POPS2_srvr == 2);
+      Validate Flight;
+}
+
+State Flight {
+      > _Algo P1 Flight
+}
+
+State Shutdown {
+      > _Algo P1 Shutdown
+}
+
+# POPS(1) partition
+Partition
+
+State POPS1_Init {
+      > _Algo P1 POPS1_Init
+      { if (POPS_srvr == 2) Validate POPS1_Active; }
+      Hold until (POPS_srvr == 1);
+   +4 > POPS Start
+}
+
+State POPS1_Active {
+  > _Algo P1 POPS1_Active
+  depending on (Shutdown) { Validate POPS1_Shutdown; }
+}
+
+State POPS1_Shutdown {
+  > _Algo P1 POPS1_Shutdown
+  > POPS Shutdown
+}
+
+
+# POPS2 partition
+
+State POPS2_Init {
+      > _Algo P1 POPS2_Init
+      { if (POPS_srvr == 2) Validate POPS2_Active; }
+      Hold until (POPS_srvr == 1);
+   +4 > POPS2 Start
+}
+
+State POPS2_Active {
+  > _Algo P1 POPS2_Active
+  depending on (Shutdown) { Validate POPS2_Shutdown; }
+}
+
+State POPS2_Shutdown {
+  > _Algo P1 POPS2_Shutdown
+  > POPS2 Shutdown
+}
+
