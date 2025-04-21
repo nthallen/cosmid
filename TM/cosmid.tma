@@ -65,7 +65,8 @@ State POPS2_Idle {
       depending on (Shutdown) { Validate POPS2_Shutdown; }
       { if (POPS2_srvr == 2) Validate POPS2_Active; }
       > _Algo P3 POPS2_Idle
-      Hold until (POPS_srvr == 2 && POPS_P_mbar < 750.);
+      Hold until (POPS_srvr == 2);
+   +5 Hold until (POPS_P_mbar < 750.);
    +1 > POPS2 Start
       Hold until (POPS2_srvr == 2);
       Validate POPS2_Active;
