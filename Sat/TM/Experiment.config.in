@@ -3,7 +3,7 @@ Experiment=$Experiment.sat
 FlightNode=@Relay@
 GSE=
 HomeDir=/home/@Prefix@/Sat
-# RUNFILE=runfile.sat
+RUNFILE=
 case $0 in
   */satrelaydoit) FlightNode=$nortvmu22;;
 esac
