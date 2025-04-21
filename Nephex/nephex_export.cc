@@ -178,6 +178,7 @@ nephex_tcp_rcvr::nephex_tcp_rcvr(const char *iname,
 {
   // reduce the maximum delay for testing
   set_retries(-1, 5, 10);
+  set_bytes_per_file(32*1024);
 }
 
 bool nephex_tcp_rcvr::connected()
