@@ -1,6 +1,14 @@
 <package> nephex_export
 <include> msg oui
 <include> host_session
+<include> "nephex_export.h"
+
+<opts> "N:"
+<sort>
+        -N <logging config>
+
+<switch>
+  case 'N': nephex_tcp_rcvr::mlf_config = optarg; break;
 
 <unsort>
 Host_Session function Nephex: Nephex data source
