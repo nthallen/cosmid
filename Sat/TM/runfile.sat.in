@@ -2,7 +2,7 @@
               [ -z "$launch_err" ] &&
                 msg "Running script runfile.sat"
   Launch      tm_bfr bfr -H bfr: -S:
-  Launch      -TMC-  lgr -N `mlf_find LOG` -n lgr
+  Launch      -TMC-  lgr -N $(mlf_find LOG) -n lgr
   Launch      tm_gen serin
   Launch      cmd    @Prefix@txsrvr -H srvr: -S: -v
-  Launch      -      tm_ip_import -v
+  Launch      -      tm_ip_import -N $(mlf_find TMIPI) -v
