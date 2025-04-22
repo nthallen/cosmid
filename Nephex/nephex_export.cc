@@ -245,6 +245,7 @@ bool nephex_tcp_rcvr::protocol_input()
 
 bool nephex_tcp_rcvr::process_eof()
 {
+  msg(MSG_ERROR, "%s: reseting", iname);
   return reset();
 }
 
