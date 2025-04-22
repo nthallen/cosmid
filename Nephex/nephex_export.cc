@@ -243,6 +243,11 @@ bool nephex_tcp_rcvr::protocol_input()
   return false;
 }
 
+bool nephex_tcp_rcvr::process_eof()
+{
+  return reset();
+}
+
 int main(int argc, char **argv)
 {
   oui_init_options(argc, argv);

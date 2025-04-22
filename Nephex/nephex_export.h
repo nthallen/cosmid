@@ -62,6 +62,7 @@ class nephex_tcp_rcvr : public Socket, mlf_packet_logger
   protected:
     bool connected() override;
     bool protocol_input() override;
+    bool process_eof() override;
     uint32_t block_count;
     nephex_tcp_export *exp;
     static const int RCVR_BUFSIZE = 50000;
