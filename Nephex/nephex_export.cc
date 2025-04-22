@@ -192,20 +192,20 @@ bool nephex_tcp_rcvr::protocol_input()
   while (cp < nc)
   {
     if (not_found('\xaa'))
-      return false;
+      break;
     if (cp < nc && buf[cp] != (uint8_t)'\xaa') {
       continue;
     }
     cp++; // pointing past sync word
     if (nc < cp+6) // enough to ready the Primary Hdr
-      return false;
+      break;
     uint16_t APword = buf[cp] + (((uint16_t)buf[cp+1])<<8);
     uint16_t APid = APword & 0x3FF;
     cp += 4;
     uint16_t Len = buf[cp] + (((uint16_t)buf[cp+1])<<8);
     cp += 2;
     if (nc < cp+Len+1) // don't have the whole packet
-      return false;
+      break;
     // Check the CRC
     // Get the time
     // uint32_t pkt_secs =
