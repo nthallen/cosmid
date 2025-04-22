@@ -184,6 +184,8 @@ nephex_tcp_rcvr::nephex_tcp_rcvr(const char *iname,
 bool nephex_tcp_rcvr::connected()
 {
   msg(MSG, "%s: Connection established to Nephex", iname);
+  TO.Set(5, 0);
+  flags |= Fl_Timeout;
   return false;
 }
 
@@ -228,6 +230,7 @@ bool nephex_tcp_rcvr::protocol_input()
       report_err("%s: Incorrect packet length APID:%u expected:%u Len:%u",
         iname, APid, apid_len+6, Len);
 
+    TO.Set(5, 0);
     log_packet(&buf[cp-8], Len+9);
     if (exp->CTS() && APid::APid_defs->OK_to_transmit(APid))
     {
@@ -243,9 +246,15 @@ bool nephex_tcp_rcvr::protocol_input()
   return false;
 }
 
+bool nephex_tcp_rcvr::protocol_timeout()
+{
+  msg(MSG_ERROR, "%s: Timeout on input, resetting", iname);
+  return reset();
+}
+
 bool nephex_tcp_rcvr::process_eof()
 {
-  msg(MSG_ERROR, "%s: reseting", iname);
+  msg(MSG_ERROR, "%s: resetting", iname);
   return reset();
 }
 
