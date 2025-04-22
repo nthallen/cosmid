@@ -5,13 +5,28 @@ TMbaseCosmid {
   HBox{ +-; Title: "System"; -+ };
   [TMbase_data];
   [coretemps];
+}
+
+TMbaseTime {
+  +-+;
   VGlue 0+1;
   [TMbase_times]
 }
 
+Algo {
+  HBox{ +-; Title: "Algo"; -+ };
+  P1: (AlgoP1,11);
+  P2: (AlgoP2,11);
+  P3: (AlgoP3,11);
+}
+
 { HBox {
     |+;
-    [TMbaseCosmid];
+    {
+      [TMbaseCosmid];
+      [Algo];
+      [TMbaseTime];
+    };
     |+;
   };
   -;

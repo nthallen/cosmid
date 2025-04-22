@@ -1,3 +1,5 @@
+TMAstat.tmc
+TMAstat.sws
 freemem.tmc
 TMbase.genui
 TMbase.tbl
@@ -20,6 +22,10 @@ runfile.satrelay
 sat.doit
 satrelay.doit
 ../Sat/TM/Experiment.config
+SWData.h
+SWData.tmc
+SWData_col.tmc
+SWData.cmd
 satdoit.dep
 satrelaydoit.dep
 cosmidcmd.cc
@@ -35,6 +41,7 @@ cosmiddispnc.cc
 cosmiddispncoui.cc
 cosmiddispnc.o
 cosmiddispncoui.o
+cosmidalgosws.tma
 cosmidalgoa.tmc
 cosmidalgo.cc
 cosmidalgooui.cc
@@ -70,6 +77,8 @@ cosmidtblnc.tmc.dep
 POPStblnc.tmc.dep
 POPS2tblnc.tmc.dep
 *.err
+TMAstat.tmc
+TMAstat.sws
 freemem.tmc
 TMbase.genui
 TMbase.tbl
@@ -94,6 +103,10 @@ satrelay.doit
 ../Sat/TM/Experiment.config
 Makefile
 *.exe
+SWData.h
+SWData.tmc
+SWData_col.tmc
+SWData.cmd
 satdoit
 satrelaydoit
 cosmidtxsrvr
