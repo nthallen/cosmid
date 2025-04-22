@@ -6,5 +6,8 @@
   Launch      tm_bfr bfr -H bfr: -S:
   Launch      -TMC-  lgr -N `mlf_find LOG` -n lgr
   Launch      tm_gen serin
-  Launch      -      tm_ip_relay -H Relay:@Relay@ -E cosmid.sat -v
+Xdef='X:Xiomas:$PKT:'$(mlf_find Xiomas)
+Sdef='S:Fthrdg:$PKT:'$(mlf_find Fthrdg)
+Ndef='N:Nephex:\xAA\xAA:'$(mlf_find Nephex)
+  Launch      -      tm_ip_relay -H Relay:@Relay@ -E cosmid.sat -I$Xdef -I$Sdef -I$Ndef -v
   Launch      cmd    playbacksrvr -H srvr: -S: -v

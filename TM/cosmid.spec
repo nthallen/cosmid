@@ -15,7 +15,7 @@ Module Nephex
 Module Sat Prefix=cosmid Relay= Relay2=
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
-DISTRIB = interact services services.cosmid.sat
+DISTRIB = interact services services.cosmid.sat services.cosmid.satrelay
 IGNORE = Makefile "*.exe"
 IGNORE = SWData.h SWData.tmc SWData_col.tmc SWData.cmd
 OBJ = SWData.h SWData.tmc SWData_col.tmc SWData.cmd
