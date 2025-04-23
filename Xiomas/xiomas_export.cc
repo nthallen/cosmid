@@ -434,7 +434,7 @@ bool xiomas_tcp_rcvr::protocol_timeout()
   TO.Clear();
   flags &= Fl_Timeout;
   sendCTS();
-  return false;
+  return reset();
 }
 
 bool xiomas_tcp_rcvr::sendFlag(uint8_t flag)
