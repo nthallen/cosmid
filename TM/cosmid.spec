@@ -12,7 +12,8 @@ Module tm_ipx
 Module Xiomas
 Module Nephex
 #Module Sat Prefix=cosmid Relay=$spi4
-Module Sat Prefix=cosmid Relay=$relay_ext Relay2=$relay_ext
+# Below config is for both relays running on windows:
+Module Sat Prefix=cosmid Relay= Relay2=
 TGTDIR = /home/cosmid
 SCRIPT = VERSION Experiment.config
 DISTRIB = interact services services.cosmid.sat services.cosmid.satrelay
